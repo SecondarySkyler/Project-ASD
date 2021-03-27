@@ -13,6 +13,6 @@ int periodSmart (string s);
 
 double getResolution();
 
-string generator(int n);
+std:string generator(int n);
 
 #endif //PERIODPROJECT_CPP_PERIODPROJECT_HPP
