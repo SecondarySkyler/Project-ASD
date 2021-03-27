@@ -36,22 +36,58 @@ int periodNaive (string s) {
     return s.length();
 }
 
-string generator(int n) {
-    
-    int samplesNum = n * 100000;
+string randomString(int n) {
     string s(n, 'a');
+    for (int i = 0; i < n; i++) {
+        s[i] = (std::rand() % 2) + 'a';
+    }
+    return s;
+}
 
-    for (int i = 0; i < samplesNum; i++) {
+// string randomQ(int n) {
+    
+//     int samplesNum = n * 100000;
+//     string s(n, 'a');
+
+//     for (int i = 0; i < samplesNum; i++) {
         
-        int q = ((int) rand()) % n + 1;
+//         int q = ((int) rand()) % n + 1;
 
-        for (int j = 0; j < q; j++) {
-            s[j] = 'a' + ((int) rand()) % 2;
-        }
-        for (int j = q; j < n; j++) {   
-            s[j] = s[j % q];
-        }
+//         for (int j = 0; j < q; j++) {
+//             s[j] = 'a' + ((int) rand()) % 2;
+//         }
+//         for (int j = q; j < n; j++) {   
+//             s[j] = s[j % q];
+//         }
            
+//     }
+//     return s;
+// }
+
+string randomQ(int n) {
+    int q = std::rand() % n + 1;
+    string s = randomString(q);
+    for (int i = q; i < n; i++) {
+        s[i] = s[((i - 1) % q) + 1];
+    }
+    return s;
+}
+
+string randomChar(int n) {
+    int q = std::rand() % n + 1;
+    string s = randomString(q);
+    s[q - 1] = 'c'; 
+    for (int i = q; i < n; i++) {
+        s[i] = s[((i - 1) % q) + 1];
+    }
+    return s;
+}
+
+string worstCase(int n) {
+    int q = n - 1;
+    string s = randomString(q);
+    for (int i = q; i < n; i++) {
+        s[i] = s[((i - 1) % q) + 1];
     }
     return s;
 }
