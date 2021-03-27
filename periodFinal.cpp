@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include "periodProject.hpp"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ int periodSmart(string s) {
     int r[n];
 
     r[1] = 0; // primo/max bordo di s[1...1]
-
+    n--;
     for (int i = 1; i < n - 1; i++) {
         int z = r[i];
         while (s[i+1] != s[z+1] && z > 0) {
@@ -22,7 +23,7 @@ int periodSmart(string s) {
         else
             r[i+1] = 0;
     }
-    return n - r[n - 1] - 1;
+    return n - r[n - 1];
 }
 
 int periodNaive (string s) { 

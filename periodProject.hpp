@@ -5,14 +5,15 @@
 #ifndef PERIODPROJECT_CPP_PERIODPROJECT_HPP
 #define PERIODPROJECT_CPP_PERIODPROJECT_HPP
 
+#include <string>
 
 
-int periodNaive (std::string s);
+int periodNaive (string s);
 
-int periodSmart (std::string s);
+int periodSmart (string s);
 
 double getResolution();
 
-std::string generator(int n);
+string generator(int n);
 
 #endif //PERIODPROJECT_CPP_PERIODPROJECT_HPP
