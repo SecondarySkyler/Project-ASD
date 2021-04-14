@@ -1,8 +1,11 @@
 #include <iostream>
-#include <string.h>
-#include "periodProject.hpp"
+// #include <string.h>
+#include <chrono>
+#include "periodFinal.hpp"
 
+using namespace std::chrono;
 using namespace std;
+
 
 int periodSmart(string s) {
     s = " " + s;
@@ -44,25 +47,6 @@ string randomString(int n) {
     return s;
 }
 
-// string randomQ(int n) {
-    
-//     int samplesNum = n * 100000;
-//     string s(n, 'a');
-
-//     for (int i = 0; i < samplesNum; i++) {
-        
-//         int q = ((int) rand()) % n + 1;
-
-//         for (int j = 0; j < q; j++) {
-//             s[j] = 'a' + ((int) rand()) % 2;
-//         }
-//         for (int j = q; j < n; j++) {   
-//             s[j] = s[j % q];
-//         }
-           
-//     }
-//     return s;
-// }
 
 string randomQ(int n) {
     int q = std::rand() % n + 1;
@@ -92,13 +76,13 @@ string worstCase(int n) {
     return s;
 }
 
-int main() {
-
-    srand(time(NULL));
-    string s = generator(50);
-    cout << s << endl;
-    cout << periodNaive(s) << endl;
-    cout << periodSmart(s) << endl; 
-
-    return 0;
+double getResolution() {
+    steady_clock::time_point start = steady_clock::now();
+    steady_clock::time_point end;
+    do {
+        end = steady_clock::now();
+    } while (start == end);
+    typedef duration<double, nanoseconds::period> duration;
+    return duration_cast<nanoseconds>(end - start).count();
 }
+
