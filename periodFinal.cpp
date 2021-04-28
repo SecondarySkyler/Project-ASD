@@ -39,39 +39,45 @@ int periodNaive (string s) {
     return s.length();
 }
 
+// METODO 1
 string randomString(int n) {
-    string s(n, 'a');
+    string s = "";
     for (int i = 0; i < n; i++) {
-        s[i] = (std::rand() % 2) + 'a';
+        s += (std::rand() % 2) + 'a';
     }
     return s;
 }
 
-
+// METODO 2
 string randomQ(int n) {
-    int q = std::rand() % n + 1;
+    int q = std::rand() % n + 1; // 1 - n
     string s = randomString(q);
     for (int i = q; i < n; i++) {
-        s[i] = s[((i - 1) % q) + 1];
+        s += s[(i % q)];
     }
     return s;
+    // 10
+    // q = abca
+    // s = abc => abcabc => abcabcabc => abcabcabca
 }
 
+// METODO 3
 string randomChar(int n) {
     int q = std::rand() % n + 1;
     string s = randomString(q);
     s[q - 1] = 'c'; 
     for (int i = q; i < n; i++) {
-        s[i] = s[((i - 1) % q) + 1];
+        s += s[((i - 1) % q) + 1];
     }
     return s;
 }
 
+// METODO 4
 string worstCase(int n) {
     int q = n - 1;
     string s = randomString(q);
     for (int i = q; i < n; i++) {
-        s[i] = s[((i - 1) % q) + 1];
+        s += s[((i - 1) % q) + 1];
     }
     return s;
 }
