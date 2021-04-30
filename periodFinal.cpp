@@ -67,7 +67,7 @@ string randomChar(int n) {
     string s = randomString(q);
     s[q - 1] = 'c'; 
     for (int i = q; i < n; i++) {
-        s += s[((i - 1) % q) + 1];
+        s += s[(i % q)];
     }
     return s;
 }
@@ -77,7 +77,7 @@ string worstCase(int n) {
     int q = n - 1;
     string s = randomString(q);
     for (int i = q; i < n; i++) {
-        s += s[((i - 1) % q) + 1];
+        s += s[(i % q)];
     }
     return s;
 }
