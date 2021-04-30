@@ -62,13 +62,8 @@ int main(int argc, char **argv) {
     // for (int i = 0; i < 100; i++)
     // {
     //     int n = a * pow(500, ((i + 0.0)/99));
-    //     string s = randomQ(n);
-    //     if (periodSmart(s) == 0)
-    //     {
-    //         cout << s.length() << endl;
-    //     } 
-        
-        
+    //     string s = worstCase(n);
+    //     cout << periodSmart(s) << endl;
     // }
     
 }
@@ -209,50 +204,66 @@ void calcVar(int method) {
 
 
 void calcDistribution(int length, int iterations) {
-    int periodOccurrencies[4][length];
-    string generate[500];
 
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < length; j++)
+    for (int i = 0; i < 4; i++) {
+        int *periodOccurencies;
+        periodOccurencies = (int*) calloc(length + 1, sizeof(int));
+        ofstream distribution("distribution_method" + to_string(i + 1) + ".csv");
+        distribution << "Period" << ", " << "Occurencies" << "\n";
+        for (int j = 0; j < iterations; j++)
         {
-            periodOccurrencies[i][j] = 0;
-        }
-        
-    }
-    
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < iterations; j++) {
             string s = gen_methods[i](length);
-            generate[j] = s;
-            if (periodSmart(s) == 0) {
-                cout << "dio" << endl; 
-            }
-            periodOccurrencies[i][periodSmart(s)]++;
-            // cout << s.length() << endl; 
-        }
-    }
-
-    for (int i = 0; i < 4; i++) {
-        ofstream distribution("distribution_method" + to_string(i+1) + ".csv");
-
-        distribution << "Period" << ", " << "Occurrencies" << '\n';
-
-        for (int j = 0; j < length; j++) {
-
-            distribution << to_string(j) << ", " << to_string(periodOccurrencies[i][j]) << '\n';
-
+            periodOccurencies[periodSmart(s)]++;
         }
 
+        for (int i = 0; i < length + 1; i++)
+        {
+            distribution << to_string(i) << ", " << to_string(periodOccurencies[i]) << "\n";
+        }
         distribution.close();
     }
-
-    ofstream stringhe("stringhe.csv");
-    for (int i = 0; i < iterations; i++)
-    {
-        stringhe << generate[i] << generate[i].length() << '\n';
-    }
+    
     
 
+
+    
+
+
+
+
+    // int periodOccurrencies[4][length];
+    // string generate[500];
+
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     for (int j = 0; j < length; j++)
+    //     {
+    //         periodOccurrencies[i][j] = 0;
+    //     }
+        
+    // }
+    
+
+    // for (int i = 0; i < 4; i++) {
+    //     for (int j = 0; j < iterations; j++) {
+    //         string s = gen_methods[i](length);
+    //         // generate[j] = s;
+    //         periodOccurrencies[i][periodSmart(s)]++;
+    //         // cout << s.length() << endl; 
+    //     }
+    // }
+
+    // for (int i = 0; i < 4; i++) {
+    //     ofstream distribution("distribution_method" + to_string(i+1) + ".csv");
+
+    //     distribution << "Period" << ", " << "Occurrencies" << '\n';
+
+    //     for (int j = 0; j < length; j++) {
+
+    //         distribution << to_string(j) << ", " << to_string(periodOccurrencies[i][j]) << '\n';
+
+    //     }
+
+    //     distribution.close();
+    // }
 }
