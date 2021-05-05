@@ -1,0 +1,146 @@
+---
+title: "Relazione"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+options(scipen = 20)
+library(ggplot2)
+library(readr)
+library(dplyr)
+naive_0 = read_csv("naive_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+smart_0 = read_csv("smart_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+
+naive_1 = read_csv("naive_1.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+smart_1 = read_csv("smart_1.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+
+naive_2 = read_csv("naive_2.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+smart_2 = read_csv("smart_2.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+
+naive_3 = read_csv("naive_3.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+smart_3 = read_csv("smart_3.csv", col_names = c("Lunghezza", "Tempo impiegato"))
+
+naive_0
+smart_0
+naive_1
+smart_1
+naive_2
+smart_2
+naive_3
+smart_3
+```
+```{r, echo=TRUE}
+var_naive = read_csv("var_naive_2.csv", col_names = c("Lunghezza", "Tempo"))
+var_smart = read_csv("var_smart_2.csv", col_names = c("Lunghezza", "Tempo"))
+var_naive
+var_smart
+
+modifyTibble_ForVariance <- function(file) {
+  file = file %>%
+  mutate(tempo_log = log10(Tempo)) %>%
+  mutate(lunghezza_log = log10(Lunghezza))
+  return(file)
+}
+
+
+
+var_naive = modifyTibble_ForVariance(var_naive)
+
+var_naive
+
+boxplot <- ggplot() +
+  geom_boxplot(data = var_naive, aes(y = tempo_log))
+boxplot
+
+mean1 <-mean(var_naive$Tempo) * 10^-9
+sd1 <- sd(var_naive$Tempo) * 10^-9
+mean1
+
+mean2 <- mean(var_smart$Tempo) * 10^-9
+sd2 <- sd(var_smart$Tempo) * 10^-9
+mean2
+```
+
+
+```{r, echo=TRUE}
+
+
+modifyTibble_ForNaive <- function(file) {
+  file = file %>%
+  mutate(tempo_log = log10(`Tempo impiegato`)) %>%
+  mutate(lunghezza_log = log10(Lunghezza)) %>%
+  mutate(Algoritmo = "Naive")
+  return(file)
+}
+
+modifyTibble_ForSmart <- function(file) {
+  file = file %>%
+  mutate(tempo_log = log10(`Tempo impiegato`)) %>%
+  mutate(lunghezza_log = log10(Lunghezza)) %>%
+  mutate(Algoritmo = "Smart")
+  return(file)
+}
+
+naive_0 = modifyTibble_ForNaive(naive_0)
+smart_0 = modifyTibble_ForSmart(smart_0)
+naive_1 = modifyTibble_ForNaive(naive_1)
+smart_1 = modifyTibble_ForSmart(smart_1)
+naive_2 = modifyTibble_ForNaive(naive_2)
+smart_2 = modifyTibble_ForSmart(smart_2)
+naive_3 = modifyTibble_ForNaive(naive_3)
+smart_3 = modifyTibble_ForSmart(smart_3)
+
+naive_0
+smart_0
+naive_1
+smart_1
+naive_2
+smart_2
+naive_3
+smart_3
+
+```
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r, echo=TRUE}
+graph1 <- ggplot() +
+  ggtitle("Metodo 1") +
+  geom_line(data = naive_0, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo)) +
+  geom_line(data = smart_0, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo))
+graph1
+
+graph2 <- ggplot() +
+  ggtitle("Metodo 2") +
+  geom_line(data = naive_1, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo)) +
+  geom_line(data = smart_1, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo))
+graph2
+
+graph3 <- ggplot() +
+  ggtitle("Metodo 3") +
+  geom_line(data = naive_2, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo)) +
+  geom_line(data = smart_2, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo))
+graph3
+
+graph4 <- ggplot() +
+  ggtitle("Metodo 4") +
+  geom_line(data = naive_3, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo)) +
+  geom_line(data = smart_3, aes(x = lunghezza_log, y = tempo_log, colour = Algoritmo))
+graph4
+
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
