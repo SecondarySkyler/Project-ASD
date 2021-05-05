@@ -21,12 +21,12 @@ double naiveTime[100];
 double smartTime[100];
 int stringsLength[100]; // array per le lunghezze delle stringhe
 
-
+// array con puntatori alle funzioni per generare le stringhe
 typedef string (*genMethods)(int);
 genMethods gen_methods[4] = {&randomString, &randomQ, &randomChar, &worstCase}; 
 
 
-
+// prototipi delle funzioni
 void generateStrings(int);
 int *fillLengthArray();
 void calcoloTempi(int);
@@ -57,18 +57,13 @@ int main(int argc, char **argv) {
         {
             calcDistribution(100, 500);
         }  
-    }
-
-    // for (int i = 0; i < 100; i++)
-    // {
-    //     int n = a * pow(500, ((i + 0.0)/99));
-    //     string s = worstCase(n);
-    //     cout << periodSmart(s) << endl;
-    // }
-    
+    } 
 }
 
-
+/**
+ * Metodo che genera 100 stringhe di lunghezza diversa
+ * memorizzate in un array passato come argomento
+ */
 void generateStrings(int method, string array[]) {
     for (int i = 0; i < 100; i++) {
         int n = a * pow(500, ((i + 0.0)/99)); // lunghezza stringa
@@ -77,6 +72,11 @@ void generateStrings(int method, string array[]) {
     }
 }
 
+/**
+ * Metodo per riempire un array con le lunghezze delle stringhe
+ * array[0] = 1000
+ * array[99] = 500.000
+ */
 int* fillLengthArray() {
     static int arrayOfLength[100];
     for (int i = 0; i < 100; i++)
@@ -94,7 +94,7 @@ void calcoloTempi(int method) {
     ofstream naive_first("naive_" + to_string(method) + ".csv");
     ofstream smart_first("smart_" + to_string(method) + ".csv");
 
-    // // Time for naive 
+    // Calcolo tempi Naive
     for (int j = 0; j < 100; j++)
     {
         steady_clock::time_point start = steady_clock::now();
@@ -117,7 +117,7 @@ void calcoloTempi(int method) {
     naive_first.close();
 
 
-    // Time smart
+    // Calcolo tempi Smart
     for (int j = 0; j < 100; j++)
     {
         steady_clock::time_point start = steady_clock::now();
