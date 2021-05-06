@@ -223,5 +223,6 @@ void calcDistribution(int length, int iterations) {
             distribution << to_string(i) << ", " << to_string(periodOccurencies[i]) << "\n";
         }
         distribution.close();
+        free(periodOccurencies);
     }
 }
