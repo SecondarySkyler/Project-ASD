@@ -58,19 +58,17 @@ modifyTibble_ForVariance <- function(file) {
 
 var_naive = modifyTibble_ForVariance(var_naive)
 
-var_naive
+var_naive %>%
+  filter(Lunghezza == 1000) %>%
+  select(Tempo) %>%
+  mutate(Media = sqrt(var(Tempo)))
+
 
 boxplot <- ggplot() +
-  geom_boxplot(data = var_naive, aes(y = tempo_log))
+  geom_bar(data = var_naive, aes(x = lunghezza_log, y = tempo_log))
 boxplot
 
-mean1 <-mean(var_naive$Tempo) * 10^-9
-sd1 <- sd(var_naive$Tempo) * 10^-9
-mean1
 
-mean2 <- mean(var_smart$Tempo) * 10^-9
-sd2 <- sd(var_smart$Tempo) * 10^-9
-mean2
 ```
 
 
