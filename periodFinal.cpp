@@ -56,9 +56,6 @@ string randomQ(int n) {
         s += s[(i % q)];
     }
     return s;
-    // 10
-    // q = abca
-    // s = abc => abcabc => abcabcabc => abcabcabca
 }
 
 // METODO 3
