@@ -8,23 +8,22 @@ using namespace std;
 
 
 int periodSmart(string s) {
-    s = " " + s;
     int n = s.length();
 
     int r[n];
 
     r[1] = 0; // primo/max bordo di s[1...1]
-    n--;
-    for (int i = 1; i < n - 1; i++) {
-        int z = r[i];
-        while (s[i+1] != s[z+1] && z > 0) {
-            z = r[z];
+    
+    for (int i = 1; i < n; i++) {
+        int z = r[i - 1];
+        while (z > 0 && s[i] != s[z]) {
+            z = r[z - 1];
         }
 
-        if (s[i+1] == s[z+1])
-            r[i+1] = z + 1;
+        if (s[i] == s[z])
+            r[i] = z + 1;
         else
-            r[i+1] = 0;
+            r[i] = 0;
     }
     return n - r[n - 1];
 }
@@ -71,11 +70,8 @@ string randomChar(int n) {
 
 // METODO 4
 string worstCase(int n) {
-    int q = n - 1;
-    string s = randomString(q);
-    for (int i = q; i < n; i++) {
-        s += s[(i % q)];
-    }
+    string s(n - 1, 'a');
+    s += 'b';
     return s;
 }
 
@@ -88,4 +84,3 @@ double getResolution() {
     typedef duration<double, nanoseconds::period> duration;
     return duration_cast<nanoseconds>(end - start).count();
 }
-
