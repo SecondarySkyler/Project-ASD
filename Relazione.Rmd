@@ -124,6 +124,8 @@ library(ggplot2)
 library(readr)
 library(dplyr)
 library(tibble)
+library(gridExtra)
+library(cowplot)
 naive_0 = read_csv("naive_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 smart_0 = read_csv("smart_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 
@@ -136,14 +138,6 @@ smart_2 = read_csv("smart_2.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 naive_3 = read_csv("naive_3.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 smart_3 = read_csv("smart_3.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 
-naive_0
-smart_0
-naive_1
-smart_1
-naive_2
-smart_2
-naive_3
-smart_3
 ```
 ```{r, echo=TRUE, include=FALSE}
 var_naive = read_csv("var_naive_2.csv", col_names = c("Lunghezza", "Tempo"))
@@ -151,24 +145,19 @@ var_smart = read_csv("var_smart_2.csv", col_names = c("Lunghezza", "Tempo"))
 var_naive
 var_smart
 
-modifyTibble_ForVariance <- function(file) {
-  file = file %>%
-  mutate(tempo_log = log10(Tempo)) %>%
-  mutate(lunghezza_log = log10(Lunghezza))
-  return(file)
-}
 
 
 
-var_naive = modifyTibble_ForVariance(var_naive)
 
-#calcolo della media ogni 20 valori
-var_naive %>%
-  group_by(Lunghezza) %>%
-  summarise(mean = mean(Tempo), var = var(Tempo))
-
-mean(var_naive$Tempo[1:20])
-var(var_naive$Tempo[1:20])
+# var_naive = modifyTibble_ForVariance(var_naive)
+# 
+# #calcolo della media ogni 20 valori
+# var_naive %>%
+#   group_by(Lunghezza) %>%
+#   summarise(mean = mean(Tempo), var = var(Tempo))
+# 
+# mean(var_naive$Tempo[1:20])
+# var(var_naive$Tempo[1:20])
 
 
 ```
@@ -176,22 +165,31 @@ var(var_naive$Tempo[1:20])
 
 ```{r, echo=TRUE, include=FALSE}
 
-
+# Funzione che aggiunge due colonne per valori log, inoltre aggiunge colonna per tipo algoritmo (smart/naive)
 modifyTibble_ForNaive <- function(file) {
   file = file %>%
-  mutate(tempo_log = log10(`Tempo impiegato`)) %>%
-  mutate(tempoInSecondi = (`Tempo impiegato` / 1e9)) %>%
-  mutate(lunghezza_log = log10(Lunghezza)) %>%
+  mutate(Lunghezza_Log = log10(Lunghezza)) %>%
+  mutate(Tempo_Log = log10(`Tempo impiegato`)) %>%
+  mutate(TempoInSecondi = (`Tempo impiegato` / 1e9)) %>%
   mutate(Algoritmo = "Naive")
   return(file)
 }
 
+# Funzione che aggiunge due colonne per valori log, inoltre aggiunge colonna per tipo algoritmo (smart/naive)
 modifyTibble_ForSmart <- function(file) {
   file = file %>%
-  mutate(tempo_log = log10(`Tempo impiegato`)) %>%
-  mutate(tempoInSecondi = (`Tempo impiegato` / 1e9)) %>%
-  mutate(lunghezza_log = log10(Lunghezza)) %>%
+  mutate(Lunghezza_Log = log10(Lunghezza)) %>%
+  mutate(Tempo_Log = log10(`Tempo impiegato`)) %>%
+  mutate(TempoInSecondi = (`Tempo impiegato` / 1e9)) %>%
   mutate(Algoritmo = "Smart")
+  return(file)
+}
+
+# Funzione che aggiunge due colonne per valori log
+modifyTibble_ForVariance <- function(file) {
+  file = file %>%
+  mutate(tempo_log = log10(Tempo)) %>%
+  mutate(lunghezza_log = log10(Lunghezza))
   return(file)
 }
 
@@ -213,6 +211,9 @@ smart_2
 naive_3
 smart_3
 
+var_naive = modifyTibble_ForVariance(var_naive)
+var_smart = modifyTibble_ForVariance(var_smart)
+
 ```
 <br />
 
@@ -221,39 +222,71 @@ smart_3
 In questa parte andremo a discutere i risultati ottenuti 
 
 ```{r, echo=TRUE, include=FALSE}
-graph1 <- ggplot() +
+# Grafici di confronto tra naive e smart sia in scala lineare che doppiamente logaritmica
+graph_1_linear <- ggplot() +
+  ggtitle("Metodo 1 lineare") +
+  geom_line(data = naive_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
+
+graph_1_log <- ggplot() +
   ggtitle("Metodo 1") +
-  geom_line(data = naive_0, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
-  geom_line(data = smart_0, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = naive_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
 graph2 <- ggplot() +
   ggtitle("Metodo 2") +
-  geom_line(data = naive_1, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
-  geom_line(data = smart_1, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = naive_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
 graph3 <- ggplot() +
   ggtitle("Metodo 3") +
-  geom_line(data = naive_2, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
-  geom_line(data = smart_2, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = naive_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
 graph4 <- ggplot() +
   ggtitle("Metodo 4") +
-  geom_line(data = naive_3, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
-  geom_line(data = smart_3, aes(x = Lunghezza, y = tempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = naive_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 ```
 ```{r, echo=FALSE}
-graph1
+
+
+grid.arrange(graph_1_linear, graph_1_log)
+
+
+```
+<br />
+
+testo confronto tra i due grafici
+
+<br />
+```{r, echo=FALSE}
 graph2
+```
+<br />
+
+testo confronto tra i due grafici
+
+<br />
+```{r, echo=FALSE}
 graph3
+```
+<br />
+
+testo confronto tra i due grafici
+
+<br />
+```{r, echo=FALSE}
 graph4
 ```
+<br />
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
