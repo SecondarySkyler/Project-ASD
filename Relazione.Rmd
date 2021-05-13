@@ -9,17 +9,121 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+<br />
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+|     Studenti     | Matricola |         Mail         |
+|:----------------:|:---------:|:--------------------:|
+|  Manuel Zuttion  |   147404  | 147404@spes.uniud.it |
+|  Cristian Murtas |   150521  | 150521@spes.uniud.it |
+| Sebastiano Vitri |   147640  | 147640@spes.uniud.it |
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+<br />
+
+
+### Indice
+* Obbiettivi e implementazione
+* Presentazione e commento dei risultati ottenuti 
+* Discussione e confronto con le attese 
+
+<br />
+<br />
+
+# **Obbiettivi e implementazione**
+- Implementazione degli algoritmi _PeriodNaive_ e _PeriodSmart_ 
+- Implementazione dei 4 metodi per la generazione delle stringhe
+- Scrittura di un algortimo per la misurazione dei tempi di esecuzione
+  degli algortimi applicati a tutti i tipi di stringhe
+- Misurazione e calcolo della varianza sui tempi di esecuzione (facoltativo)
+- Calcolo della distribuzione di probabilità del periodo per i 4 metodi
+  per la generazione delle stringhe
+  
+<br />
+
+### Definizione di periodo per una stringa
+Data una stringa S composta da _n_ caratteri, il periodo è un numero k tale 
+che S[i] = S[i+k] per ogni i ≤ n-k <br />
+__N.B.__ (con indicizzazione dei caratteri della stringa a partire da 1). 
+
+<br />
+
+La sottostringa di caratteri di lunghezza _k_ può essere ripetuta un numero
+non intero di volte in S, ovvero _n_ non è necessariamente un multiplo di _k_.
+
+<br />
+
+### Spiegazione dell'algortimo _PeriodNaive_
+L'algortimo utilizza un ciclo _for_ con un indice _i_ che varia da 1 a _n_ e 
+alla prima iterazione che soddisfa la seguente proprietà: <br />
+&nbsp;&nbsp; ∀i = 1, …, n − p  s(i) = s(i+p) <br />
+La proprietà sopra elencata può essere verifica in due modi: <br />
+1. Usando un ciclo _for_ secondario e controllando che s(i) = s(i + p) ∀i = 1, …, n − p <br />
+2. Alternativamente è possibile utilizzare le funzioni _strcmp_ e _strsub_ del linguaggio
+  _C_ per confrontare che il prefisso s[1, n-p] sia congruente con il suffisso s[p+1, n]
+
+<br />
+La nostra implementazione ha usato il secondo metodo di verifica.
+
+<br />
+
+### Spiegazione dell'algortimo _PeriodSmart_
+Abbiamo bisogno di definire il **bordo** di una stringa come: <br />
+_Una qualunque stringa t che sia contemporaneamente prefisso proprio di s e suffisso proprio di s._ <br />
+Si osservi che _p_ è un periodo frazionario di S se e soltanto se _p_ = |S| - _r_ dove _r_ è la lunghezza del bordo massimo di S. <br />
+Di conseguenza il nostro problema originale si è ridotto al calcolo del bordo massimo per una stringa S.
+
+<br />
+
+### Generazione delle stringhe
+Per il calcolo della lunghezza delle stringhe, invece di utilizzare _b_ come costante moltiplicativa ad ogni iterazione, abbiamo preferito introdurre la sua formula durante il calcolo della lunghezza della stringa, questo per evitare la propagazione dell’errore dovuto alla moltiplicazione iterativa di valori affetti da approssimazioni floating-point. <br />
+<pre>
+  int n = a * pow(500, ((i + 0.0) / 99));
+</pre>
+Abbiamo utilizzato un valore di _a_ pari a 1000 che è la lunghezza della stringa S alla prima iterazione, e pow(...) che è matematicamente equivalente a _b^i_, in questo modo calcoliamo la lunghezza della stringa senza propagazione dell’errore. <br />
+__N.B.__ Per la generazione delle stringhe abbiamo utilizzato un alfabeto basato su 2 caratteri {a, b} 
+
+<br />
+
+### Metodi per la generazione delle stringhe
+1. Il primo metodo prevede la generazione degli _n_ caratteri in modo pseudo-casuale
+2. Si ha la presenza di un parametro _q_ generato pseudo casualmente tra 1 e _n_, quindi la stringa verrà generata in modo pseudo-casuale nell’intervallo _[1, q]_, successivamente tale sotto stringa verrà ripetuta fino al termine della stringa S. Con l’operazione modulo si evita un indexing out of bound.
+3. È una variante del secondo metodo e prevede che nella stringa S in posizione _S[q]_ venga inserito un carattere speciale differente da tutti quelli generati.
+4. La quarta variante prevede la costruzione deterministica di una stringa di modo che possa fungere da caso           pessimo nell’analisi di complessità.
+
+<br />
+
+### Misurazione dei tempi di esecuzione dei due algoritmi
+Per la parte di misurazione dei tempi, abbiamo utilizzato i metodi della libreria _<chrono>_ di _C++_, in seguito si è calcolata la risoluzione del clock di sistema, utile al fine di calcolare l’intervallo minimo di tempo misurabile: <br />
+<font size = 4> _T<sub>min</sub> = R($\frac{1}{e}$ +1)_ </font> <br />
+Il valore minimo di tempo misurabile è stato utilizzato per la misurazione dei tempi degli algoritmi sulle stringhe aventi una lunghezza contenuta. Per fare ciò si è utilizzato un ciclo while che itera l’algoritmo sulla stessa stringa finchè il tempo cumulativo dell’esecuzione non risultasse maggiore o uguale a _T<sub>min</sub>_ , dopodichè tale valore è stato diviso per il numero di iterazioni eseguite, tenute in memoria da un contatore.
+
+<br />
+
+### Calcolo della varianza
+Questa parte del progetto riprende in parte la logica di funzionamento del codice per la misurazione dei tempi.
+Siamo partiti con la creazione di un vettore contenente tutte le lunghezze delle stringhe nell’intervallo
+_[1000, 500000]_ successivamente abbiamo iterato 20 volte la misurazione dei tempi di esecuzione per ogni _n_ variando la stringa ad ogni iterazione. <br />
+Tutte le misurazione eseguite, relative alla specifica lunghezza, sono state poi scritte in un file _.csv_ per la successiva analisi con R Studio.
+<br />
+
+### Calcolo delle distribuzioni di probabilità
+Per il calcolo delle distribuzioni si itera per 500 volte la generazione di stringhe di lunghezza 100 per ognuno dei 4 metodi, e ad ogni iterazione si tiene conto dell’occorrenza del periodo calcolato incrementando di 1 la posizione corrispondente dell’array delle occorrenze. <br />
+I dati memorizzati nell'array delle occorrenze sono stati poi trascritti in un file _.csv_ per la successiva analisi tramite lo strumento R Studio.
+<pre>
+string s = gen_methods[i](length); // genera la stringa s con l'i-esimo metodo di generazione
+periodOccurencies[periodSmart(s)]++; //incrementa di 1 l'occorrenza del periodo di s
+</pre>
+
+
+  
+
+
 
 ```{r cars, include=FALSE}
 options(scipen = 20)
 library(ggplot2)
 library(readr)
 library(dplyr)
+library(tibble)
 naive_0 = read_csv("naive_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 smart_0 = read_csv("smart_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 
@@ -58,15 +162,13 @@ modifyTibble_ForVariance <- function(file) {
 
 var_naive = modifyTibble_ForVariance(var_naive)
 
+#calcolo della media ogni 20 valori
 var_naive %>%
-  filter(Lunghezza == 1000) %>%
-  select(Tempo) %>%
-  mutate(Media = sqrt(var(Tempo)))
+  group_by(Lunghezza) %>%
+  summarise(mean = mean(Tempo), var = var(Tempo))
 
-
-boxplot <- ggplot() +
-  geom_bar(data = var_naive, aes(x = lunghezza_log, y = tempo_log))
-boxplot
+mean(var_naive$Tempo[1:20])
+var(var_naive$Tempo[1:20])
 
 
 ```
@@ -112,7 +214,9 @@ naive_3
 smart_3
 
 ```
-## Presentazione risultati
+<br />
+
+# **Presentazione risultati**
 
 In questa parte andremo a discutere i risultati ottenuti 
 
@@ -145,7 +249,7 @@ graph4 <- ggplot() +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 ```
-```{r}
+```{r, echo=FALSE}
 graph1
 graph2
 graph3
