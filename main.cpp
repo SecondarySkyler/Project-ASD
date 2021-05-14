@@ -218,10 +218,11 @@ void calcDistribution(int length, int iterations) {
             periodOccurencies[periodSmart(s)]++;
         }
 
-        for (int i = 0; i < length + 1; i++)
+        for (int z = 0; z < length + 1; z++)
         {
-            distribution << to_string(i) << ", " << to_string(periodOccurencies[i]) << "\n";
+            distribution << to_string(z) << ", " << to_string(periodOccurencies[z]) << "\n";
         }
         distribution.close();
+        free(periodOccurencies);
     }
 }
