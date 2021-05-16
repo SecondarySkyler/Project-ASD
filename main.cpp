@@ -203,7 +203,6 @@ void calcDistribution(int length, int iterations) {
         periodOccurencies = (int*) calloc(length + 1, sizeof(int));
 
         ofstream distribution("distribution_method" + to_string(i + 1) + ".csv");
-        distribution << "Period" << ", " << "Occurencies" << "\n";
         
         for (int j = 0; j < iterations; j++)
         {
