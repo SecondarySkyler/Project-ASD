@@ -150,35 +150,13 @@ distribution_method_2 = read_csv("distribution_method2.csv", col_names = c("Peri
 distribution_method_3 = read_csv("distribution_method3.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
 distribution_method_4 = read_csv("distribution_method4.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
 
-distribution_method_1 = 
-  distribution_method_1 %>%
-  # filter(Occorrenze > 9)
+distribution_method_1
 
+distribution_method_2 
 
+distribution_method_3 
 
-distribution_method_2 =
-  distribution_method_2 %>%
-
-distribution_method_3 =
-  distribution_method_3 %>%
-
-distribution_method_4 = 
-  distribution_method_4 %>%
-
-
-
-
-
-
-# var_naive = modifyTibble_ForVariance(var_naive)
-# 
-# #calcolo della media ogni 20 valori
-# var_naive %>%
-#   group_by(Lunghezza) %>%
-#   summarise(mean = mean(Tempo), var = var(Tempo))
-# 
-# mean(var_naive$Tempo[1:20])
-# var(var_naive$Tempo[1:20])
+distribution_method_4
 
 
 ```
@@ -334,38 +312,36 @@ testo confronto tra i due grafici
 grid.arrange(graph_4_linear, graph_4_log)
 ```
 <br />
+<br />
 
 
 # **Presentazione dei dati ottenuti per il calcolo della varianza**
 
 
 ```{r, echo=FALSE}
-var_naive1 =
-  var_naive %>%
-    group_by(Lunghezza) %>%
-    summarise(`Media dei tempi` = mean(Tempo), `Scarto quadratico medio` = sqrt(var(Tempo)))
 
-var_naive1
 
-graph_var_naive <- ggplot(var_naive1, aes(x = Lunghezza, y = Tempo)) +
-  geom_boxplot(notch = FALSE)
-graph_var_naive
 
-graph_var1 =
-var_naive %>%
-  group_by(Lunghezza) %>%
-  filter(Lunghezza == 1000) %>%
-  ggplot() +
-  geom_boxplot(mapping = aes(y = Tempo), width = 1)
 
-graph_var2 = 
-var_smart %>%
-  group_by(Lunghezza) %>%
-  filter(Lunghezza == 1000) %>%
-  ggplot() +
-  geom_boxplot(mapping = aes(y = Tempo), width = 1)
-
-grid.arrange(graph_var1, graph_var2, ncol = 2)
+# graph_var_naive <- ggplot(var_naive1, aes(x = Lunghezza, y = Tempo)) +
+#   geom_boxplot(notch = FALSE)
+# graph_var_naive
+# 
+# graph_var1 =
+# var_naive %>%
+#   group_by(Lunghezza) %>%
+#   filter(Lunghezza == 1000) %>%
+#   ggplot() +
+#   geom_boxplot(mapping = aes(y = Tempo), width = 1)
+# 
+# graph_var2 = 
+# var_smart %>%
+#   group_by(Lunghezza) %>%
+#   filter(Lunghezza == 1000) %>%
+#   ggplot() +
+#   geom_boxplot(mapping = aes(y = Tempo), width = 1)
+# 
+# grid.arrange(graph_var1, graph_var2, ncol = 2)
 
 var_naive1 = 
   var_naive %>%
@@ -394,23 +370,24 @@ graph
 
 
 
+<br />
+<br />
+<br />
 
 
 
 
 
-
-Appunto per grafici distribuzione
-- qui si puo usare diagrammi a barre
+# **Distribuzioni di probabilità del periodo**
+## con i 4 metodi di generazione
 
 ```{r, include=FALSE}
-
-
 distribution_1_graph <- ggplot(distribution_method_1, aes(x = Periodo, y = Occorrenze)) +
   geom_bar(stat = "Identity")
 
+```
+```{r, echo=FALSE}
 distribution_1_graph
-
 ```
 
 
@@ -419,38 +396,34 @@ distribution_1_graph
 distribution_method_2  = distribution_method_2 %>%
   filter(Occorrenze > 0)
   
-
-
-graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occorrenze)) +
+distribution_2_graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occorrenze)) +
   geom_bar(stat = "identity")
-
-graph
-
-
+```
+```{r, echo = FALSE}
+distribution_2_graph
 ```
 ```{r, include=FALSE}
-distribution_method_3 = distribution_method_3 %>%
-  filter(Occorrenze > 0)
+distribution_method_3
 
-graph_distr_3 <- ggplot(distribution_method_3, aes(x = Periodo, y = Occorrenze)) +
+distribution_3_graph <- ggplot(distribution_method_3, aes(x = Periodo, y = Occorrenze)) +
   geom_bar(stat = "identity") 
-
-graph_distr_3
+```
+```{r, echo=FALSE}
+distribution_3_graph
 
 ```
 
 
 
 ```{r, include=FALSE}
-
-  
-
-graph_distribution_4 <- ggplot(distribution_method_4, aes(x = Periodo, y = Occorrenze)) +
+distribution_4_graph <- ggplot(distribution_method_4, aes(x = Periodo, y = Occorrenze)) +
   geom_bar(stat = "identity")
-
-graph_distribution_4
+```
+```{r, echo=FALSE}
+distribution_4_graph
 
 ```
 
 ### Analisi del quarto metodo di generazione
-Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo
+Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo, si nota in maniera evidente
+che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100 nel nostro caso).
