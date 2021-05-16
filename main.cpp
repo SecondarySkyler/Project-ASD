@@ -86,32 +86,34 @@ int* fillLengthArray() {
     return arrayOfLength;   
 }
 
+/**
+ * Metodo per il calcolo dei tempi di esecuzione dei due algoritmi
+ * @method e' il numero del metodo che si vuole utilizzare per la generazione delle stringhe
+ */
 void calcoloTempi(int method) {
     
     string generatedStrings[100];
     generateStrings(method, generatedStrings);
 
-    ofstream naive_first("naive_" + to_string(method) + ".csv");
-    ofstream smart_first("smart_" + to_string(method) + ".csv");
+    ofstream naive_first("naive_" + to_string(method) + ".csv"); // csv per la scrittura
+    ofstream smart_first("smart_" + to_string(method) + ".csv"); // csv per la scrittura
 
     // Calcolo tempi Naive
     for (int j = 0; j < 100; j++)
     {
+
+        int iterCount = 0;
+        steady_clock::time_point end;
         steady_clock::time_point start = steady_clock::now();
-        periodNaive(generatedStrings[j]);
-        steady_clock::time_point end = steady_clock::now();
-        double elapsedTime = duration_cast<nanoseconds>(end - start).count(); 
-        int iterCount = 1;
-        while (elapsedTime < t_min)
+        do
         {
-            start = steady_clock::now();
             periodNaive(generatedStrings[j]);
             end = steady_clock::now();
-            elapsedTime += duration_cast<nanoseconds>(end - start).count(); 
             iterCount++;
-        }
-        naiveTime[j] = elapsedTime / iterCount;
-        naive_first << generatedStrings[j].length() << ", " << naiveTime[j] << "\n";  
+        } while (duration_cast<nanoseconds>(end - start).count() < t_min);
+        
+        naiveTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
+        naive_first << generatedStrings[j].length() << ", " << naiveTime[j] << "\n"; // scrittura su csv 
         cout << "Naive -- Metodo: " + to_string(method) << " Iterazione : " +  to_string(j) << endl;
     }
     naive_first.close();
@@ -120,21 +122,18 @@ void calcoloTempi(int method) {
     // Calcolo tempi Smart
     for (int j = 0; j < 100; j++)
     {
-        steady_clock::time_point start = steady_clock::now();
-        periodSmart(generatedStrings[j]);
+        int iterCount = 0;
         steady_clock::time_point end = steady_clock::now();
-        double elapsedTime = duration_cast<nanoseconds>(end - start).count(); 
-        int iterCount = 1;
-        while (elapsedTime < t_min)
+        steady_clock::time_point start = steady_clock::now();
+        do
         {
-            start = steady_clock::now();
             periodSmart(generatedStrings[j]);
             end = steady_clock::now();
-            elapsedTime += duration_cast<nanoseconds>(end - start).count(); 
             iterCount++;
-        }
-        smartTime[j] = elapsedTime / iterCount;
-        smart_first << generatedStrings[j].length() << ", " << smartTime[j] << "\n"; 
+        } while (duration_cast<nanoseconds>(end - start).count() < t_min);
+        
+        smartTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
+        smart_first << generatedStrings[j].length() << ", " << smartTime[j] << "\n"; // scrittura su csv
         cout << "Smart -- Metodo: " + to_string(method) << " Iterazione : " +  to_string(j) << endl;  
     }
     smart_first.close(); 

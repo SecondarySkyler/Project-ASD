@@ -145,6 +145,27 @@ var_smart = read_csv("var_smart_2.csv", col_names = c("Lunghezza", "Tempo"))
 var_naive
 var_smart
 
+distribution_method_1 = read_csv("distribution_method1.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
+distribution_method_2 = read_csv("distribution_method2.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
+distribution_method_3 = read_csv("distribution_method3.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
+distribution_method_4 = read_csv("distribution_method4.csv", col_names = c("Periodo", "Occorrenze"), col_types = list(col_integer(), col_integer()))
+
+distribution_method_1 = 
+  distribution_method_1 %>%
+  # filter(Occorrenze > 9)
+
+
+
+distribution_method_2 =
+  distribution_method_2 %>%
+
+distribution_method_3 =
+  distribution_method_3 %>%
+
+distribution_method_4 = 
+  distribution_method_4 %>%
+
+
 
 
 
@@ -219,7 +240,8 @@ var_smart = modifyTibble_ForVariance(var_smart)
 
 # **Presentazione risultati**
 
-In questa parte andremo a discutere i risultati ottenuti 
+#### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica
+<br />
 
 ```{r, echo=TRUE, include=FALSE}
 # Grafici di confronto tra naive e smart sia in scala lineare che doppiamente logaritmica
@@ -235,21 +257,44 @@ graph_1_log <- ggplot() +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
-graph2 <- ggplot() +
+
+
+graph_2_linear <- ggplot() +
+  ggtitle("Metodo 2 lineare") +
+  geom_line(data = naive_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) 
+
+graph_2_log <- ggplot() +
   ggtitle("Metodo 2") +
   geom_line(data = naive_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
-graph3 <- ggplot() +
+
+
+
+graph_3_linear <- ggplot() +
+  ggtitle("Metodo 3 lineare") +
+  geom_line(data = naive_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
+
+graph_3_log <- ggplot() +
   ggtitle("Metodo 3") +
   geom_line(data = naive_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 
-graph4 <- ggplot() +
+
+
+
+graph_4_linear <- ggplot() +
+  ggtitle("Metodo 4 lineare") +
+  geom_line(data = naive_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
+  geom_line(data = smart_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
+
+graph_4_log <- ggplot() +
   ggtitle("Metodo 4") +
   geom_line(data = naive_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
@@ -262,6 +307,7 @@ graph4 <- ggplot() +
 grid.arrange(graph_1_linear, graph_1_log)
 
 
+
 ```
 <br />
 
@@ -269,7 +315,7 @@ testo confronto tra i due grafici
 
 <br />
 ```{r, echo=FALSE}
-graph2
+grid.arrange(graph_2_linear, graph_2_log)
 ```
 <br />
 
@@ -277,7 +323,7 @@ testo confronto tra i due grafici
 
 <br />
 ```{r, echo=FALSE}
-graph3
+grid.arrange(graph_3_linear, graph_3_log)
 ```
 <br />
 
@@ -285,8 +331,126 @@ testo confronto tra i due grafici
 
 <br />
 ```{r, echo=FALSE}
-graph4
+grid.arrange(graph_4_linear, graph_4_log)
 ```
 <br />
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# **Presentazione dei dati ottenuti per il calcolo della varianza**
+
+
+```{r, echo=FALSE}
+var_naive1 =
+  var_naive %>%
+    group_by(Lunghezza) %>%
+    summarise(`Media dei tempi` = mean(Tempo), `Scarto quadratico medio` = sqrt(var(Tempo)))
+
+var_naive1
+
+graph_var_naive <- ggplot(var_naive1, aes(x = Lunghezza, y = Tempo)) +
+  geom_boxplot(notch = FALSE)
+graph_var_naive
+
+graph_var1 =
+var_naive %>%
+  group_by(Lunghezza) %>%
+  filter(Lunghezza == 1000) %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(y = Tempo), width = 1)
+
+graph_var2 = 
+var_smart %>%
+  group_by(Lunghezza) %>%
+  filter(Lunghezza == 1000) %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(y = Tempo), width = 1)
+
+grid.arrange(graph_var1, graph_var2, ncol = 2)
+
+var_naive1 = 
+  var_naive %>%
+  group_by(Lunghezza) %>%
+  summarise(`Media dei tempi` = mean(Tempo), `Scarto quadratico medio` = sqrt(var(Tempo)))
+  
+var_smart1 = 
+  var_smart %>%
+  group_by(Lunghezza) %>%
+  summarise(`Media dei tempi` = mean(Tempo), `Scarto quadratico medio` = sqrt(var(Tempo))) 
+
+graph <- ggplot() +
+  geom_line(data = var_smart1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi` + `Scarto quadratico medio`))) +
+  geom_line(data = var_smart1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi` - `Scarto quadratico medio`))) + 
+  geom_line(data = var_smart1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi`))) +
+  geom_line(data = var_naive1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi` + `Scarto quadratico medio`))) +
+  geom_line(data = var_naive1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi` - `Scarto quadratico medio`))) + 
+  geom_line(data = var_naive1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi`))) +
+  geom_ribbon(data = var_smart1, aes(x = log10(Lunghezza), ymin = log10(`Media dei tempi` - `Scarto quadratico medio`), ymax = log10(`Media dei tempi` + `Scarto quadratico medio`), fill = "Smart" ), alpha = 0.5) +
+  geom_ribbon(data = var_naive1, aes(x = log10(Lunghezza), ymin = log10(`Media dei tempi` - `Scarto quadratico medio`), ymax = log10(`Media dei tempi` + `Scarto quadratico medio`), fill = "Naive" ), alpha = 0.5) +
+  theme_minimal()
+graph
+
+```
+
+
+
+
+
+
+
+
+
+
+Appunto per grafici distribuzione
+- qui si puo usare diagrammi a barre
+
+```{r, include=FALSE}
+
+
+distribution_1_graph <- ggplot(distribution_method_1, aes(x = Periodo, y = Occorrenze)) +
+  geom_bar(stat = "Identity")
+
+distribution_1_graph
+
+```
+
+
+
+```{r, include=FALSE}
+distribution_method_2  = distribution_method_2 %>%
+  filter(Occorrenze > 0)
+  
+
+
+graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occorrenze)) +
+  geom_bar(stat = "identity")
+
+graph
+
+
+```
+```{r, include=FALSE}
+distribution_method_3 = distribution_method_3 %>%
+  filter(Occorrenze > 0)
+
+graph_distr_3 <- ggplot(distribution_method_3, aes(x = Periodo, y = Occorrenze)) +
+  geom_bar(stat = "identity") 
+
+graph_distr_3
+
+```
+
+
+
+```{r, include=FALSE}
+
+  
+
+graph_distribution_4 <- ggplot(distribution_method_4, aes(x = Periodo, y = Occorrenze)) +
+  geom_bar(stat = "identity")
+
+graph_distribution_4
+
+```
+
+### Analisi del quarto metodo di generazione
+Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo
