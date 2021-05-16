@@ -218,18 +218,21 @@ var_smart = modifyTibble_ForVariance(var_smart)
 
 # **Presentazione risultati**
 
-#### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica
+#### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica <br />
+Dall'analisi di complessità nel caso medio dei due algoritmi, si è ottenuto un andamento quadratico per l'algoritmo _PeriodNaive_ 
+mentre per quanto riguarda l'algoritmo _PeriodSmart_ la complessità è risultata lineare.
+
 <br />
 
 ```{r, echo=TRUE, include=FALSE}
 # Grafici di confronto tra naive e smart sia in scala lineare che doppiamente logaritmica
 graph_1_linear <- ggplot() +
-  ggtitle("Metodo 1 lineare") +
+  ggtitle("Metodo 1 - Scala lineare") +
   geom_line(data = naive_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
 
 graph_1_log <- ggplot() +
-  ggtitle("Metodo 1") +
+  ggtitle("Metodo 1 - Scale logaritmiche") +
   geom_line(data = naive_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
@@ -289,7 +292,11 @@ grid.arrange(graph_1_linear, graph_1_log)
 ```
 <br />
 
-testo confronto tra i due grafici
+Nel primo grafico si osserva come l'algoritmo _PeriodSmart_ risulti essere molto performante rispetto al suo rivale. <br />
+Nel grafico in scala doppiamente logaritmica, invece si osserva come la curva dell'algortimo _PeriodNaive_ abbia pendenza doppia rispetto alla
+curva dell'algortimo _PeriodSmart_, ciò è indicativo di una complessità rispettivamente quadratica e lineare, come evidenziato dall'analisi di complessità
+svolta a lezione. <br />
+
 
 <br />
 ```{r, echo=FALSE}
@@ -297,7 +304,11 @@ grid.arrange(graph_2_linear, graph_2_log)
 ```
 <br />
 
-testo confronto tra i due grafici
+In questo contesto il metodo di generazione prevede la scelta del periodo in modo pseudo-casuale, ciò rende le curve molto frastagliate, soprattutto per l'algortimo _PeriodNaive_. <br />
+Tale andamento mette in evidenza come _PeriodNaive_ termini anticipatamente l'esecuzione nel caso di un periodo più contenuto della stringa, mentre ciò accade in maniera meno evidente nel caso dell'algoritmo
+_PeriodSmart_. <br />
+
+
 
 <br />
 ```{r, echo=FALSE}
@@ -305,13 +316,18 @@ grid.arrange(graph_3_linear, graph_3_log)
 ```
 <br />
 
-testo confronto tra i due grafici
+Rispetto al metodo 2, si prevede che l'ultimo carattere che compone il periodo, sia diverso da tutti quelli precedentemente generati. <br />
+Dai grafici non si evince nessuna sostanziale differenza nell'andamento della curva. <br />
 
 <br />
 ```{r, echo=FALSE}
 grid.arrange(graph_4_linear, graph_4_log)
 ```
 <br />
+
+Come precedentemente discusso, se si assume il caso pessimo, ovvero il caso in cui il periodo è sempre pari alla lunghezza della stringa, si noterà che la curva relativa all'algoritmo _PeriodNaive_, 
+risulta essere meno frastagliata e più fedele alle aspettative. 
+Mentre per quanto riguarda la controparte _PeriodSmart_ si nota come non risenta del caso pessimo ottendendo dei valori in linea con quelli ottenuti con i metodi precedenti. <br />
 <br />
 
 
