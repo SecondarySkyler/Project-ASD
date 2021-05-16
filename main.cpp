@@ -152,20 +152,17 @@ void calcVar(int method) {
         do
         {   
             string s = gen_methods[1](arrayOfLength[j]);
-            steady_clock::time_point start = steady_clock::now();
-            periodNaive(s);
+            int iterCount = 0;
             steady_clock::time_point end = steady_clock::now();
-            double elapsedTime = duration_cast<nanoseconds>(end - start).count(); 
-            int iterCount = 1;
-            while (elapsedTime < t_min)
+            steady_clock::time_point start = steady_clock::now();
+            do
             {
-                start = steady_clock::now();
                 periodNaive(s);
                 end = steady_clock::now();
-                elapsedTime += duration_cast<nanoseconds>(end - start).count(); 
                 iterCount++;
-            }
-            naiveTime[j] = elapsedTime / iterCount;
+            } while (duration_cast<nanoseconds>(end - start).count() < t_min);
+
+            naiveTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
             iterations++;
             naive_var << s.length() << ", " << naiveTime[j] << "\n";  
             cout << "Naive_Var -- Metodo: 2"  << " Ciclo : " +  to_string(j) << " Iterazione: " + to_string(iterations) << endl;
@@ -177,20 +174,17 @@ void calcVar(int method) {
         do
         {
             string s = gen_methods[1](arrayOfLength[j]);
-            steady_clock::time_point start = steady_clock::now();
-            periodSmart(s);
+            int iterCount = 0;
             steady_clock::time_point end = steady_clock::now();
-            double elapsedTime = duration_cast<nanoseconds>(end - start).count(); 
-            int iterCount = 1;
-            while (elapsedTime < t_min)
+            steady_clock::time_point start = steady_clock::now();
+            do
             {
-                start = steady_clock::now();
                 periodSmart(s);
                 end = steady_clock::now();
-                elapsedTime += duration_cast<nanoseconds>(end - start).count(); 
                 iterCount++;
-            }
-            smartTime[j] = elapsedTime / iterCount;
+            } while (duration_cast<nanoseconds>(end - start).count() < t_min);
+
+            smartTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
             iterations++;
             smart_var << s.length() << ", " << smartTime[j] << "\n"; 
             cout << "Smart_Var -- Metodo: 2" << " Ciclo : " +  to_string(j) << " Iterazione: " + to_string(iterations) << endl;
@@ -209,7 +203,6 @@ void calcDistribution(int length, int iterations) {
         periodOccurencies = (int*) calloc(length + 1, sizeof(int));
 
         ofstream distribution("distribution_method" + to_string(i + 1) + ".csv");
-        distribution << "Period" << ", " << "Occurencies" << "\n";
         
         for (int j = 0; j < iterations; j++)
         {
