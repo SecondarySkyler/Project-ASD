@@ -1,5 +1,5 @@
 #include <iostream>
-// #include <string.h>
+#include <string.h>
 #include <chrono>
 #include "periodFinal.hpp"
 
@@ -83,4 +83,12 @@ double getResolution() {
     } while (start == end);
     typedef duration<double, nanoseconds::period> duration;
     return duration_cast<nanoseconds>(end - start).count();
+}
+
+bool isInArray(char *s, char **array, int argc) {
+    bool check = false;
+    for(int i = 1; i<argc; i++) {
+        check |= !strcmp(array[i], s);
+    }
+    return check;
 }
