@@ -1,5 +1,5 @@
 #include <iostream>
-// #include <string.h>
+#include <string.h>
 #include <chrono>
 #include "periodFinal.hpp"
 
@@ -86,9 +86,9 @@ double getResolution() {
 }
 
 bool isInArray(char *s, char **array, int argc) {
-    bool check;
+    bool check = false;
     for(int i = 1; i<argc; i++) {
-        check |= s == array[i];
+        check |= !strcmp(array[i], s);
     }
     return check;
 }

@@ -68,7 +68,6 @@ void generateStrings(int method, string array[]) {
     for (int i = 0; i < 100; i++) {
         int n = a * pow(500, ((i + 0.0)/99)); // lunghezza stringa
         array[i] = gen_methods[method](n);
-        cout << i << endl;
     }
 }
 
