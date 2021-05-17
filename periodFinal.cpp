@@ -84,3 +84,11 @@ double getResolution() {
     typedef duration<double, nanoseconds::period> duration;
     return duration_cast<nanoseconds>(end - start).count();
 }
+
+bool isInArray(char *s, char **array, int argc) {
+    bool check;
+    for(int i = 1; i<argc; i++) {
+        check |= s == array[i];
+    }
+    return check;
+}

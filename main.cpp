@@ -38,25 +38,25 @@ int main(int argc, char **argv) {
     srand(time(NULL));
 
     if (argc > 1) {
-        if (strcmp(argv[1], "--1") == 0) {
+        if (isInArray("--1", argv, argc)) {
             calcoloTempi(0);
         } 
-        if (strcmp(argv[2], "--2") == 0) {
+        if (isInArray("--2", argv, argc)) {
             calcoloTempi(1);
         }
-        if (strcmp(argv[3], "--3") == 0) {
+        if (isInArray("--3", argv, argc)) {
             calcoloTempi(2);
         }
-        if (strcmp(argv[4], "--4") == 0) {
+        if (isInArray("--4", argv, argc)) {
             calcoloTempi(3);
         }
-        if (strcmp(argv[5], "--var") == 0) {
+        if (isInArray("--var", argv, argc)) {
             calcVar(2);
         }
-        if (strcmp(argv[6], "--distr") == 0)
+        if (isInArray("--distr", argv, argc))
         {
             calcDistribution(100, 500);
-        }  
+        }
     } 
 }
 

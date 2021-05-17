@@ -19,4 +19,6 @@ std::string worstCase(int n);
 
 double getResolution();
 
+bool isInArray(char *s, char **array, int argc);
+
 #endif
