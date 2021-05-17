@@ -405,19 +405,26 @@ distribution_1_graph <- ggplot(distribution_method_1, aes(x = Periodo, y = Occor
 ```{r, echo=FALSE}
 distribution_1_graph
 ```
+Questo metodo prevede la generazione della stringa con tutti i caratteri disponibili nell'alfabeto, in maniera pseudo-casuale. <br />
+Come si evince dal grafico, il periodo tende ad essere prossimo alla lunghezza della stringa, questo verosimilmente perché in questo caso, dove l'alfabeto è composta da due caratteri
+(a, b), si ha che la probabilità di avere sequenze ripetute di caratteri è molto bassa, di conseguenza il periodo tende ad essere molto alto. <br />
 
 
 
 ```{r, include=FALSE}
-distribution_method_2  = distribution_method_2 %>%
-  filter(Occorrenze > 0)
-  
 distribution_2_graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occorrenze)) +
   geom_bar(stat = "identity")
 ```
 ```{r, echo = FALSE}
 distribution_2_graph
 ```
+<br />
+
+Il secondo metodo prevede la generazione randomica di un indice intero _q_ che verrà utilizzato per generare la sotto stringa da _[1, q]_ in seguito 
+si procederà ripetendo tale sotto stringa fino a che la lunghezza _n_ sarà soddisfatta. <br />
+La distribuzione risulta essere ben distribuita su tutto l'intervallo, questo perché la scelta di _q_ ha una probabilità di _$\frac{1}{n}$_ dove _n_ nel nostro caso è 100. <br />
+
+
 ```{r, include=FALSE}
 distribution_method_3
 
@@ -428,6 +435,8 @@ distribution_3_graph <- ggplot(distribution_method_3, aes(x = Periodo, y = Occor
 distribution_3_graph
 
 ```
+<br />
+Questo è una variante del secondo metodo, e rispetto a quest'ultimo la distribuzione delle occorrenze risulta essere molto più uniforme. <br />
 
 
 
@@ -443,3 +452,7 @@ distribution_4_graph
 ### Analisi del quarto metodo di generazione
 Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo, si nota in maniera evidente
 che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100 nel nostro caso).
+
+
+
+
