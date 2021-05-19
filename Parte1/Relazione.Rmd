@@ -1,7 +1,8 @@
 ---
 title: "Relazione di Algoritmi e Strutture Dati"
 output:
-  html_document: default
+  html_document:
+    df_print: paged
   pdf_document: default
 ---
 
@@ -41,7 +42,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Definizione di periodo per una stringa
 Data una stringa S composta da _n_ caratteri, il periodo è un numero k tale 
-che S[i] = S[i+k] per ogni i ≤ n-k. <br />
+che S[i] = S[i+k] per ogni i $\leq$ n-k. <br />
 __N.B.__ con indicizzazione dei caratteri della stringa a partire da 1. 
 
 <br />
@@ -54,9 +55,9 @@ non intero di volte in S, ovvero _n_ non è necessariamente un multiplo di _k_.
 ### Spiegazione dell'algoritmo _PeriodNaive_
 L'algoritmo utilizza un ciclo _for_ con un indice _i_ che varia da 1 a _n_ e 
 alla prima iterazione che soddisfa la seguente proprietà: <br />
-&nbsp;&nbsp; ∀i = 1, …, n − p  s(i) = s(i+p) <br />
+&nbsp;&nbsp; $\forall$i = 1, …, n - p  s(i) = s(i+p) <br />
 La proprietà sopra elencata può essere verifica in due modi: <br />
-1. Usando un ciclo _for_ secondario e controllando che s(i) = s(i + p) ∀i = 1, …, n − p <br />
+1. Usando un ciclo _for_ secondario e controllando che s(i) = s(i + p) $\forall$i = 1, …, n - p <br />
 2. Alternativamente è possibile utilizzare le funzioni _strcmp_ e _strsub_ del linguaggio
   _C_ per confrontare che il prefisso s[1, n-p] sia congruente con il suffisso s[p+1, n].
 
@@ -137,6 +138,7 @@ library(dplyr)
 library(tibble)
 library(gridExtra)
 library(cowplot)
+
 naive_0 = read_csv("naive_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 smart_0 = read_csv("smart_0.csv", col_names = c("Lunghezza", "Tempo impiegato"))
 
@@ -229,7 +231,8 @@ var_smart = modifyTibble_ForVariance(var_smart)
 
 # **Presentazione risultati**
 
-#### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica <br />
+#### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica 
+<br />
 Dall'analisi di complessità nel caso medio dei due algoritmi si è ottenuto un andamento quadratico per l'algoritmo _PeriodNaive_. <br />
 Per quanto riguarda l'algoritmo _PeriodSmart_ la complessità è risultata lineare.
 
@@ -241,6 +244,8 @@ graph_1_linear <- ggplot() +
   ggtitle("Metodo 1 - Scala lineare") +
   geom_line(data = naive_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_0, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
+
+
 
 graph_1_log <- ggplot() +
   ggtitle("Metodo 1 - Scale logaritmiche") +
@@ -296,7 +301,8 @@ graph_4_log <- ggplot() +
 ```{r, echo=FALSE}
 
 
-grid.arrange(graph_1_linear, graph_1_log)
+grob1 <- arrangeGrob(graph_1_linear, graph_1_log)
+ggsave("graph_1.pdf", grob1)
 
 
 
@@ -312,7 +318,8 @@ svolta a lezione. <br />
 
 <br />
 ```{r, echo=FALSE}
-grid.arrange(graph_2_linear, graph_2_log)
+grob2 <- arrangeGrob(graph_2_linear, graph_2_log)
+ggsave("graph_2.pdf", grob2)
 ```
 <br />
 
@@ -324,7 +331,8 @@ Tuttavia, accade in maniera meno evidente nel caso dell'algoritmo _PeriodSmart_.
 
 <br />
 ```{r, echo=FALSE}
-grid.arrange(graph_3_linear, graph_3_log)
+grob3 <- arrangeGrob(graph_3_linear, graph_3_log)
+ggsave("graph_3.pdf", grob3)
 ```
 <br />
 
@@ -333,7 +341,8 @@ Dai grafici non si evince nessuna sostanziale differenza nell'andamento della cu
 
 <br />
 ```{r, echo=FALSE}
-grid.arrange(graph_4_linear, graph_4_log)
+grob4 <- arrangeGrob(graph_4_linear, graph_4_log)
+ggsave("graph_4.pdf", grob4)
 ```
 <br />
 
@@ -347,30 +356,6 @@ Allo stesso tempo, osservando la controparte _PeriodSmart_ si mette in evidenza 
 
 
 ```{r, echo=FALSE}
-
-
-
-
-# graph_var_naive <- ggplot(var_naive1, aes(x = Lunghezza, y = Tempo)) +
-#   geom_boxplot(notch = FALSE)
-# graph_var_naive
-# 
-# graph_var1 =
-# var_naive %>%
-#   group_by(Lunghezza) %>%
-#   filter(Lunghezza == 1000) %>%
-#   ggplot() +
-#   geom_boxplot(mapping = aes(y = Tempo), width = 1)
-# 
-# graph_var2 = 
-# var_smart %>%
-#   group_by(Lunghezza) %>%
-#   filter(Lunghezza == 1000) %>%
-#   ggplot() +
-#   geom_boxplot(mapping = aes(y = Tempo), width = 1)
-# 
-# grid.arrange(graph_var1, graph_var2, ncol = 2)
-
 var_naive1 = 
   var_naive %>%
   group_by(Lunghezza) %>%
@@ -392,6 +377,8 @@ graph <- ggplot() +
   geom_ribbon(data = var_naive1, aes(x = log10(Lunghezza), ymin = log10(`Media dei tempi` - `Scarto quadratico medio`), ymax = log10(`Media dei tempi` + `Scarto quadratico medio`), fill = "Naive" ), alpha = 0.5) +
   theme_minimal()
 graph
+
+ggsave("var.pdf")
 
 ```
 
@@ -416,6 +403,7 @@ distribution_1_graph <- ggplot(distribution_method_1, aes(x = Periodo, y = Occor
 ```
 ```{r, echo=FALSE}
 distribution_1_graph
+ggsave("distr1.pdf")
 ```
 
 <br/>
@@ -432,6 +420,7 @@ distribution_2_graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occor
 ```
 ```{r, echo = FALSE}
 distribution_2_graph
+ggsave("distr2.pdf")
 ```
 <br />
 
@@ -449,7 +438,7 @@ distribution_3_graph <- ggplot(distribution_method_3, aes(x = Periodo, y = Occor
 ```
 ```{r, echo=FALSE}
 distribution_3_graph
-
+ggsave("distr3.pdf")
 ```
 <br />
 Nel grafico si illustra la variante del secondo metodo. <br /> 
@@ -463,7 +452,7 @@ distribution_4_graph <- ggplot(distribution_method_4, aes(x = Periodo, y = Occor
 ```
 ```{r, echo=FALSE}
 distribution_4_graph
-
+ggsave("distr4.pdf")
 ```
 
 ### Analisi del quarto metodo di generazione
