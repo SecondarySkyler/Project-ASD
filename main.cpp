@@ -164,7 +164,7 @@ void calcVar(int method) {
             naiveTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
             iterations++;
             naive_var << s.length() << ", " << naiveTime[j] << "\n";  
-            cout << "Naive_Var -- Metodo: 2"  << " Ciclo : " +  to_string(j) << " Iterazione: " + to_string(iterations) << endl;
+            cout << "Naive_Var ~"  << " Lunghezza(n°): " +  to_string(j) + " Iterazione: " + to_string(iterations) << endl;
         } while (iterations < 20);
         
 
@@ -186,7 +186,7 @@ void calcVar(int method) {
             smartTime[j] = duration_cast<nanoseconds>(end - start).count() / iterCount;
             iterations++;
             smart_var << s.length() << ", " << smartTime[j] << "\n"; 
-            cout << "Smart_Var -- Metodo: 2" << " Ciclo : " +  to_string(j) << " Iterazione: " + to_string(iterations) << endl;
+            cout << "Smart_Var ~" << " Lunghezza(n°): " +  to_string(j) << " Iterazione: " + to_string(iterations) << endl;
         } while (iterations < 20);
         iterations = 0;
     }  
@@ -205,8 +205,7 @@ void calcDistribution(int length, int iterations) {
         
         for (int j = 0; j < iterations; j++)
         {
-            string s = gen_methods[i](length);
-            periodOccurencies[periodSmart(s)]++;
+            periodOccurencies[periodSmart(gen_methods[i](length))]++;
         }
 
         for (int z = 0; z < length + 1; z++)
