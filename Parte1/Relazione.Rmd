@@ -1,9 +1,10 @@
 ---
 title: "Relazione di Algoritmi e Strutture Dati"
 output:
+  pdf_document: 
+    keep_tex: yes
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -298,11 +299,11 @@ graph_4_log <- ggplot() +
   scale_x_log10(limits = c(1000, 1000000)) +
   scale_y_log10()
 ```
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 
 
 grob1 <- arrangeGrob(graph_1_linear, graph_1_log)
-ggsave("graph_1.pdf", grob1)
+ggsave("graph_1.pdf", grob1, width = 10, height = 10)
 
 
 
@@ -375,10 +376,13 @@ graph <- ggplot() +
   geom_line(data = var_naive1, aes(x = log10(Lunghezza), y = log10(`Media dei tempi`))) +
   geom_ribbon(data = var_smart1, aes(x = log10(Lunghezza), ymin = log10(`Media dei tempi` - `Scarto quadratico medio`), ymax = log10(`Media dei tempi` + `Scarto quadratico medio`), fill = "Smart" ), alpha = 0.5) +
   geom_ribbon(data = var_naive1, aes(x = log10(Lunghezza), ymin = log10(`Media dei tempi` - `Scarto quadratico medio`), ymax = log10(`Media dei tempi` + `Scarto quadratico medio`), fill = "Naive" ), alpha = 0.5) +
+  labs(x = "Lunghezza") +
+  labs(y = "Media con Varianza") + 
   theme_minimal()
 graph
 
 ggsave("var.pdf")
+
 
 ```
 
@@ -386,6 +390,8 @@ ggsave("var.pdf")
 
 
 <br />
+Dal grafico si osserva che l'algoritmo _PeriodSmart_ sia caratterizzato da una varianza più contenuta, secondo la nostra ipotesi ciò è dovuto al fatto che la complessità di _PeriodSmart_ non è influenzata dalla lunghezza del periodo. <br />
+D'altro canto l'algoritmo _PeriodNaive_ mostra una varianza maggiore, sintomo del fatto che i tempi di esecuzione per una data stringa _s_ dipendono in maggior misura dalla lunghezza del periodo. <br />
 <br />
 <br />
 
@@ -457,7 +463,16 @@ ggsave("distr4.pdf")
 
 ### Analisi del quarto metodo di generazione
 Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo. <br />
-In maniera evidente si può notare che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100).
+In maniera evidente si può notare che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100). <br />
+
+<br />
+<br />
+
+# Considerazioni finali
+Dai dati ottenuti abbiamo potuto confermare empiricamente la complessità degli algoritmi analizzati. <br />
+Il quarto metodo di generazione delle stringhe è stato il più efficace ad evidenziare la differenza di complessità tra i due algoritmi, specialmente nel grafico logaritmico. <br />
+I grafici ricavati relativi alla varianza, suggeriscono come i due algoritmi risentano in maniera differente della lunghezza del periodo, in _PeriodNaive_ abbiamo osservato una varianza maggiore, <br /> ciò ci fa suppore che i suoi tempi di esecuzione per una data stringa _s_ dipendano fortemente dal periodo più che dalla lunghezza della stringa in se. <br />
+
 
 
 
