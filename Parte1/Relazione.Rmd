@@ -390,8 +390,9 @@ ggsave("var.pdf")
 
 
 <br />
-Dal grafico si osserva che l'algoritmo _PeriodSmart_ sia caratterizzato da una varianza più contenuta, secondo la nostra ipotesi ciò è dovuto al fatto che la complessità di _PeriodSmart_ non è influenzata dalla lunghezza del periodo. <br />
-D'altro canto l'algoritmo _PeriodNaive_ mostra una varianza maggiore, sintomo del fatto che i tempi di esecuzione per una data stringa _s_ dipendono in maggior misura dalla lunghezza del periodo. <br />
+Dal grafico si rileva che l'algoritmo _PeriodSmart_ sia caratterizzato da una varianza più contenuta. <br />
+La causa da noi ipotizzata sarebbe che la complessità dell'algoritmo sopracitato non sia influenzata dalla lunghezza del periodo. <br />
+D'altro canto l'algoritmo _PeriodNaive_ mostra una varianza maggiore, giacché i tempi di esecuzione per una data stringa _s_ dipendono, in maggior misura, dalla lunghezza del periodo. <br />
 <br />
 <br />
 
@@ -470,8 +471,9 @@ In maniera evidente si può notare che tutte le stringhe generate hanno come per
 
 # Considerazioni finali
 Dai dati ottenuti abbiamo potuto confermare empiricamente la complessità degli algoritmi analizzati. <br />
-Il quarto metodo di generazione delle stringhe è stato il più efficace ad evidenziare la differenza di complessità tra i due algoritmi, specialmente nel grafico logaritmico. <br />
-I grafici ricavati relativi alla varianza, suggeriscono come i due algoritmi risentano in maniera differente della lunghezza del periodo, in _PeriodNaive_ abbiamo osservato una varianza maggiore, <br /> ciò ci fa suppore che i suoi tempi di esecuzione per una data stringa _s_ dipendano fortemente dal periodo più che dalla lunghezza della stringa in se. <br />
+Il quarto metodo di generazione delle stringhe è stato il più efficace a evidenziare la discrepanza di complessità tra i due algoritmi, specialmente nel grafico logaritmico. <br />
+I grafici ricavati relativi alla varianza, suggeriscono come i due algoritmi risentano in maniera differente della lunghezza del periodo. <br />
+La varianza maggiore osservata in _PeriodNaive_ fa suppore che i suoi tempi di esecuzione, per una data stringa _s_, dipendano fortemente dal periodo piuttosto che dalla lunghezza della stringa in sé. <br />
 
 
 
