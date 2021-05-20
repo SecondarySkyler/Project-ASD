@@ -204,12 +204,8 @@ void calcDistribution(int length, int iterations) {
         
         for (int j = 0; j < iterations; j++)
         {
-<<<<<<< HEAD:main.cpp
-            periodOccurencies[periodSmart(gen_methods[i](length))]++;
-=======
             string s = gen_methods[i](length); // genero la stringa
             periodOccurencies[periodSmart(s)]++; // aumento di 1 il valore in posizione periodSmart(s)
->>>>>>> 4dcaef9da8cba477a09561cf4e1ba8019464fb0e:Parte1/main.cpp
         }
 
         for (int z = 0; z < length + 1; z++)
