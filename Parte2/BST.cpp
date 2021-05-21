@@ -41,6 +41,15 @@ class BST {
                 return NULL;  
         }
 
+        void inOrder(node* tree) {
+            if (tree != NULL)
+            {
+                inOrder(tree->left);
+                cout << tree->val << endl;
+                inOrder(tree->right);
+            }
+        }
+
     public:
         BST() {
             root = NULL;
@@ -54,9 +63,14 @@ class BST {
         node* find(int key) {
             return find(key, root);
         }
+
+        void inOrder() {
+            inOrder(root);
+            cout << endl;
+        }
 };
 
-/*int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
     BST tree;
     tree.insert(20);
@@ -66,14 +80,15 @@ class BST {
     tree.insert(15);
     tree.insert(17);
     tree.insert(9);
-    if (tree.find(17) != NULL)
-    {
-        cout << "dio" << endl;
-    }
+    tree.inOrder();
+    // if (tree.find(17) != NULL)
+    // {
+    //     cout << "dio" << endl;
+    // }
     
 
     return 0;
-}*/
+}
 
 
 
