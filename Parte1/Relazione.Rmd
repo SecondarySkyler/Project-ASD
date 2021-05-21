@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<br />
+\newline
 
 |     Studenti     | Matricola |         Mail         |
 |:----------------:|:---------:|:--------------------:|
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 |  Cristian Murtas |   150521  | 150521@spes.uniud.it |
 | Sebastiano Vitri |   147640  | 147640@spes.uniud.it |
 
-<br />
+\newline
 
 
 ### Indice
@@ -27,58 +27,58 @@ knitr::opts_chunk$set(echo = TRUE)
 * Presentazione e commento dei risultati ottenuti 
 * Discussione e confronto con le attese 
 
-<br />
-<br />
+
+\newpage
 
 # **Obbiettivi e implementazione**
-- Implementazione degli algoritmi _PeriodNaive_ e _PeriodSmart_ 
-- Implementazione dei 4 metodi per la generazione delle stringhe
+- Implementazione degli algoritmi _PeriodNaive_ e _PeriodSmart_ ;
+- Implementazione dei 4 metodi per la generazione delle stringhe;
 - Scrittura di un algoritmo per la misurazione dei tempi di esecuzione
-  degli algoritmi applicati a tutti i tipi di stringhe
-- Misurazione e calcolo della varianza sui tempi di esecuzione (facoltativo)
+  degli algoritmi applicati a tutti i tipi di stringhe;
+- Misurazione e calcolo della varianza sui tempi di esecuzione (facoltativo);
 - Calcolo della distribuzione di probabilità del periodo per i 4 metodi
-  per la generazione delle stringhe
+  per la generazione delle stringhe.
   
-<br />
+\newline
 
 ### Definizione di periodo per una stringa
 Data una stringa S composta da _n_ caratteri, il periodo è un numero k tale 
-che S[i] = S[i+k] per ogni i $\leq$ n-k. <br />
+che S[i] = S[i+k] per ogni i $\leq$ n-k. \newline
 __N.B.__ con indicizzazione dei caratteri della stringa a partire da 1. 
 
-<br />
+\newline
 
 La sottostringa di caratteri di lunghezza _k_ può essere ripetuta un numero
 non intero di volte in S, ovvero _n_ non è necessariamente un multiplo di _k_.
 
-<br />
+\newline
 
 ### Spiegazione dell'algoritmo _PeriodNaive_
 L'algoritmo utilizza un ciclo _for_ con un indice _i_ che varia da 1 a _n_ e 
-alla prima iterazione che soddisfa la seguente proprietà: <br />
-&nbsp;&nbsp; $\forall$i = 1, …, n - p  s(i) = s(i+p) <br />
-La proprietà sopra elencata può essere verifica in due modi: <br />
-1. Usando un ciclo _for_ secondario e controllando che s(i) = s(i + p) $\forall$i = 1, …, n - p <br />
+alla prima iterazione che soddisfa la seguente proprietà: \newline
+&nbsp;&nbsp; $\forall$i = 1, …, n - p  s(i) = s(i+p) \newline
+La proprietà sopra elencata può essere verifica in due modi: \newline
+1. Usando un ciclo _for_ secondario e controllando che s(i) = s(i + p) $\forall$i = 1, …, n - p \newline
 2. Alternativamente è possibile utilizzare le funzioni _strcmp_ e _strsub_ del linguaggio
   _C_ per confrontare che il prefisso s[1, n-p] sia congruente con il suffisso s[p+1, n].
 
-<br />
+\newline
 La nostra implementazione ha usato il secondo metodo di verifica.
 
-<br />
+\newline
 
 ### Spiegazione dell'algoritmo _PeriodSmart_
-Abbiamo bisogno di definire il **bordo** di una stringa come: <br />
-_Una qualunque stringa t che sia contemporaneamente prefisso e suffiso proprio di s_. <br />
-Si osservi che _p_ è un periodo frazionario di S se e soltanto se _p_ = |S| - _r_ dove _r_ è la lunghezza del bordo massimo di S. <br />
+Abbiamo bisogno di definire il **bordo** di una stringa come: \newline
+_Una qualunque stringa t che sia contemporaneamente prefisso e suffiso proprio di s_. \newline
+Si osservi che _p_ è un periodo frazionario di S se e soltanto se _p_ = |S| - _r_ dove _r_ è la lunghezza del bordo massimo di S. \newline
 Di conseguenza, il nostro problema originale si è ridotto al calcolo del bordo massimo per una stringa S.
 
-<br />
+\newline
 
 ### Generazione delle stringhe
-Per il calcolo della lunghezza delle stringhe, non è stata impiegata _b_ come costante moltiplicativa a ogni iterazione. <br />
-Abbiamo, invece, preferito introdurre la sua formula durante il calcolo della lunghezza della stringa. <br />
-Ciò ha permesso di evitare la propagazione dell’errore dovuto alla moltiplicazione iterativa di valori affetti da approssimazioni floating-point. <br />
+Per il calcolo della lunghezza delle stringhe, non è stata impiegata _b_ come costante moltiplicativa a ogni iterazione. \newline
+Abbiamo, invece, preferito introdurre la sua formula durante il calcolo della lunghezza della stringa. \newline
+Ciò ha permesso di evitare la propagazione dell’errore dovuto alla moltiplicazione iterativa di valori affetti da approssimazioni floating-point. \newline
 <pre>
   void generateStrings(int method, string array[]) {
     for (int i = 0; i < 100; i++) {
@@ -87,40 +87,40 @@ Ciò ha permesso di evitare la propagazione dell’errore dovuto alla moltiplica
     }
 }
 </pre>
-Abbiamo utilizzato un valore di _a_ pari a 1000, la quale risulta essere la lunghezza della stringa S alla prima iterazione, e pow(...) che matematicamente equivale a _b^i_, in questo modo calcoliamo la lunghezza della stringa senza propagazione dell’errore. <br />
+Abbiamo utilizzato un valore di _a_ pari a 1000, la quale risulta essere la lunghezza della stringa S alla prima iterazione, e pow(...) che matematicamente equivale a _b^i_, in questo modo calcoliamo la lunghezza della stringa senza propagazione dell’errore. \newline
 __N.B.__ Per la generazione delle stringhe abbiamo utilizzato un alfabeto basato su 2 caratteri {a, b} 
 
-<br />
+\newline
 
 ### Metodi per la generazione delle stringhe
 1. Il primo metodo prevede la generazione degli _n_ caratteri in modo pseudo-casuale
-2. Si ha la presenza di un parametro _q_ generato pseudo casualmente tra 1 e _n_, la stringa verrà quindi generata in modo pseudo-casuale nell’intervallo _[1, q]_. <br /> Successivamente tale sottostringa verrà ripetuta fino al termine della stringa S. <br />
+2. Si ha la presenza di un parametro _q_ generato pseudo casualmente tra 1 e _n_, la stringa verrà quindi generata in modo pseudo-casuale nell’intervallo _[1, q]_. \newline Successivamente tale sottostringa verrà ripetuta fino al termine della stringa S. \newline
 Con l’operazione modulo si evita un indexing out of bound.
 3. È una variante del secondo in cui è previsto che nella stringa S in posizione _S[q]_ venga inserito un carattere speciale differente da tutti quelli generati.
 4. La quarta variante prevede la costruzione deterministica di una stringa di modo che possa fungere da caso           pessimo nell’analisi di complessità.
 
-<br />
+\newline
 
 ### Misurazione dei tempi di esecuzione dei due algoritmi
-Per la parte di misurazione dei tempi abbiamo impiegato i metodi della libreria _<chrono>_ di _C++_. <br /> 
-È stata poi calcolata la risoluzione del clock di sistema, utile al fine di calcolare l’intervallo minimo di tempo misurabile: <br />
-<font size = 4> _T<sub>min</sub> = R($\frac{1}{e}$ +1)_ </font> <br />
-Il valore minimo di tempo misurabile è stato adoperato per la misurazione dei tempi degli algoritmi sulle stringhe aventi una lunghezza contenuta. Per fare ciò ci siamo serviti di un ciclo while, il quale itera l’algoritmo sulla stessa stringa finché il tempo cumulativo dell’esecuzione non risulti maggiore o uguale a _T<sub>min</sub>_ . <br />
+Per la parte di misurazione dei tempi abbiamo impiegato i metodi della libreria _<chrono>_ di _C++_. \newline 
+È stata poi calcolata la risoluzione del clock di sistema, utile al fine di calcolare l’intervallo minimo di tempo misurabile: \newline
+<font size = 4> _T<sub>min</sub> = R($\frac{1}{e}$ +1)_ </font> \newline
+Il valore minimo di tempo misurabile è stato adoperato per la misurazione dei tempi degli algoritmi sulle stringhe aventi una lunghezza contenuta. Per fare ciò ci siamo serviti di un ciclo while, il quale itera l’algoritmo sulla stessa stringa finché il tempo cumulativo dell’esecuzione non risulti maggiore o uguale a _T<sub>min</sub>_ . \newline
 Dopodiché il valore di tempo ottenuto viene diviso per il numero di iterazioni eseguite, tenute in memoria da un contatore.
 
-<br />
+\newline
 
 ### Calcolo della varianza
 Questa parte del progetto riprende parzialmente la logica di funzionamento del codice per la misurazione dei tempi.
 Siamo partiti con la creazione di un vettore contenente tutte le lunghezze delle stringhe nell’intervallo
-_[1000, 500000]_. <br />
-Successivamente abbiamo iterato 20 volte la misurazione dei tempi di esecuzione per ogni _n_, variando la stringa ad ogni iterazione. <br />
+_[1000, 500000]_. \newline
+Successivamente abbiamo iterato 20 volte la misurazione dei tempi di esecuzione per ogni _n_, variando la stringa ad ogni iterazione. \newline
 Tutte le misurazioni eseguite, relative alla specifica lunghezza, sono state poi scritte in un file _.csv_ per l'analisi eseguita con RStudio.
-<br />
+\newline
 
 ### Calcolo delle distribuzioni di probabilità
-Per il calcolo delle distribuzioni si replica per 500 volte la generazione di stringhe di lunghezza 100 per ognuno dei 4 metodi. <br /> 
-Per ciascuna iterazione si calcola il periodo della stringa generata, incrementando di 1 il valore nella posizione corrispondente al periodo nell’array delle occorrenze. <br />
+Per il calcolo delle distribuzioni si replica per 500 volte la generazione di stringhe di lunghezza 100 per ognuno dei 4 metodi. \newline 
+Per ciascuna iterazione si calcola il periodo della stringa generata, incrementando di 1 il valore nella posizione corrispondente al periodo nell’array delle occorrenze. \newline
 <pre>
   for (int j = 0; j < iterations; j++)
   {
@@ -228,16 +228,16 @@ var_naive = modifyTibble_ForVariance(var_naive)
 var_smart = modifyTibble_ForVariance(var_smart)
 
 ```
-<br />
+\newline
 
 # **Presentazione risultati**
 
 #### Grafici di confronto tra i tempi di esecuzione di _PeriodNaive_ e _PeriodSmart_ con scala lineare e doppiamente logaritmica 
-<br />
-Dall'analisi di complessità nel caso medio dei due algoritmi si è ottenuto un andamento quadratico per l'algoritmo _PeriodNaive_. <br />
+
+Dall'analisi di complessità nel caso medio dei due algoritmi si è ottenuto un andamento quadratico per l'algoritmo _PeriodNaive_. \newline
 Per quanto riguarda l'algoritmo _PeriodSmart_ la complessità è risultata lineare.
 
-<br />
+\newline
 
 ```{r, echo=TRUE, include=FALSE}
 # Grafici di confronto tra naive e smart sia in scala lineare che doppiamente logaritmica
@@ -258,12 +258,12 @@ graph_1_log <- ggplot() +
 
 
 graph_2_linear <- ggplot() +
-  ggtitle("Metodo 2 lineare") +
+  ggtitle("Metodo 2 - Scala lineare") +
   geom_line(data = naive_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) 
 
 graph_2_log <- ggplot() +
-  ggtitle("Metodo 2") +
+  ggtitle("Metodo 2 - Scale logaritmiche") +
   geom_line(data = naive_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_1, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
@@ -273,12 +273,12 @@ graph_2_log <- ggplot() +
 
 
 graph_3_linear <- ggplot() +
-  ggtitle("Metodo 3 lineare") +
+  ggtitle("Metodo 3  - Scala lineare") +
   geom_line(data = naive_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
 
 graph_3_log <- ggplot() +
-  ggtitle("Metodo 3") +
+  ggtitle("Metodo 3 - Scale logaritmiche") +
   geom_line(data = naive_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_2, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
@@ -288,12 +288,12 @@ graph_3_log <- ggplot() +
 
 
 graph_4_linear <- ggplot() +
-  ggtitle("Metodo 4 lineare") +
+  ggtitle("Metodo 4 - Scala lineare") +
   geom_line(data = naive_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo))
 
 graph_4_log <- ggplot() +
-  ggtitle("Metodo 4") +
+  ggtitle("Metodo 4 - Scale logaritmiche") +
   geom_line(data = naive_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   geom_line(data = smart_3, aes(x = Lunghezza, y = TempoInSecondi, colour = Algoritmo)) +
   scale_x_log10(limits = c(1000, 1000000)) +
@@ -308,49 +308,49 @@ ggsave("graph_1.pdf", grob1, width = 10, height = 10)
 
 
 ```
-<br />
+\newline
 
-Nel primo grafico si osserva come l'algoritmo _PeriodSmart_ risulti essere molto più performante rispetto al suo rivale. <br />
+Nel primo grafico si osserva come l'algoritmo _PeriodSmart_ risulti essere molto più performante rispetto al suo rivale. \newline
 Nel grafico in scala doppiamente logaritmica si osserva come la curva dell'algoritmo _PeriodNaive_ abbia pendenza doppia rispetto alla
-curva dell'algoritmo _PeriodSmart_. <br />
+curva dell'algoritmo _PeriodSmart_. \newline
 Esso è indice di un andamento rispettivamente quadratico e lineare, come evidenziato dall'analisi di complessità
-svolta a lezione. <br />
+svolta a lezione. \newline
 
 
-<br />
-```{r, echo=FALSE}
+\newline
+```{r, echo=FALSE, include=FALSE}
 grob2 <- arrangeGrob(graph_2_linear, graph_2_log)
 ggsave("graph_2.pdf", grob2)
 ```
-<br />
+\newline
 
-In questo contesto il metodo di generazione prevede la scelta del periodo in modo pseudo-casuale, rendendo le curve molto frastagliate, soprattutto per l'algoritmo _PeriodNaive_. <br />
-Tale andamento mette in evidenza come _PeriodNaive_ termini anticipatamente l'esecuzione nel caso di un periodo più contenuto della stringa. <br />
-Tuttavia, accade in maniera meno evidente nel caso dell'algoritmo _PeriodSmart_. <br />
+In questo contesto il metodo di generazione prevede la scelta del periodo in modo pseudo-casuale, rendendo le curve molto frastagliate, soprattutto per l'algoritmo _PeriodNaive_. \newline
+Tale andamento mette in evidenza come _PeriodNaive_ termini anticipatamente l'esecuzione nel caso di un periodo più contenuto della stringa. \newline
+Tuttavia, accade in maniera meno evidente nel caso dell'algoritmo _PeriodSmart_. \newline
 
 
 
-<br />
-```{r, echo=FALSE}
+\newline
+```{r, echo=FALSE, include=FALSE}
 grob3 <- arrangeGrob(graph_3_linear, graph_3_log)
 ggsave("graph_3.pdf", grob3)
 ```
-<br />
+\newline
 
-Rispetto al metodo 2, si prevede che l'ultimo carattere che compone il periodo sia diverso da tutti quelli generati anteriormente. <br />
-Dai grafici non si evince nessuna sostanziale differenza nell'andamento della curva. <br />
+Rispetto al metodo 2, si prevede che l'ultimo carattere che compone il periodo sia diverso da tutti quelli generati anteriormente. \newline
+Dai grafici non si evince nessuna sostanziale differenza nell'andamento della curva. \newline
 
-<br />
-```{r, echo=FALSE}
+\newline
+```{r, echo=FALSE, include=FALSE}
 grob4 <- arrangeGrob(graph_4_linear, graph_4_log)
 ggsave("graph_4.pdf", grob4)
 ```
-<br />
+\newline
 
 Come precedentemente discusso, se si assume il caso pessimo, ovvero il caso in cui il periodo è sempre pari alla lunghezza della stringa, si noterà che la curva relativa all'algoritmo _PeriodNaive_, 
 risulta essere meno frastagliata e più fedele alle aspettative. 
-Allo stesso tempo, osservando la controparte _PeriodSmart_ si mette in evidenza come esso non risenta del caso pessimo ottenendo dei valori in linea con quelli ricavati tramite i metodi sopra descritti. <br />
-<br />
+Allo stesso tempo, osservando la controparte _PeriodSmart_ si mette in evidenza come esso non risenta del caso pessimo ottenendo dei valori in linea con quelli ricavati tramite i metodi sopra descritti. \newline
+\newline
 
 
 # **Presentazione dei dati ottenuti per il calcolo della varianza**
@@ -389,12 +389,12 @@ ggsave("var.pdf")
 
 
 
-<br />
-Dal grafico si rileva che l'algoritmo _PeriodSmart_ sia caratterizzato da una varianza più contenuta. <br />
-La causa da noi ipotizzata sarebbe che la complessità dell'algoritmo sopracitato non sia influenzata dalla lunghezza del periodo. <br />
-D'altro canto l'algoritmo _PeriodNaive_ mostra una varianza maggiore, giacché i tempi di esecuzione per una data stringa _s_ dipendono, in maggior misura, dalla lunghezza del periodo. <br />
-<br />
-<br />
+\newline
+Dal grafico si rileva che l'algoritmo _PeriodSmart_ sia caratterizzato da una varianza più contenuta. \newline
+La causa da noi ipotizzata sarebbe che la complessità dell'algoritmo sopracitato non sia influenzata dalla lunghezza del periodo. \newline
+D'altro canto l'algoritmo _PeriodNaive_ mostra una varianza maggiore, giacché i tempi di esecuzione per una data stringa _s_ dipendono, in maggior misura, dalla lunghezza del periodo. \newline
+\newline
+\newline
 
 
 
@@ -415,9 +415,9 @@ ggsave("distr1.pdf")
 
 <br/>
 
-Questo metodo prevede la generazione della stringa con tutti i caratteri disponibili nell'alfabeto in maniera pseudo-casuale. <br />
-Come si deduce dal grafico, il periodo tende ad essere prossimo alla lunghezza della stringa. <br />
-Avendo utilizzato un alfabeto composto da due caratteri (a, b) la probabilità che una determinata sequenza si ripeta è molto bassa, di conseguenza il periodo tende ad essere molto alto. <br />
+Questo metodo prevede la generazione della stringa con tutti i caratteri disponibili nell'alfabeto in maniera pseudo-casuale. \newline
+Come si deduce dal grafico, il periodo tende ad essere prossimo alla lunghezza della stringa. \newline
+Avendo utilizzato un alfabeto composto da due caratteri (a, b) la probabilità che una determinata sequenza si ripeta è molto bassa, di conseguenza il periodo tende ad essere molto alto. \newline
 
 
 
@@ -429,12 +429,12 @@ distribution_2_graph <- ggplot(distribution_method_2, aes(x = Periodo, y = Occor
 distribution_2_graph
 ggsave("distr2.pdf")
 ```
-<br />
+\newline
 
 Il secondo metodo implica la generazione randomica di un indice intero _q_, utilizzato per generare la sottostringa da _[1, q]_ in seguito 
-si procederà ripetendo tale sottostringa fino a che la lunghezza _n_ sarà soddisfatta. <br />
-La distribuzione risulta essere ben distribuita su tutto l'intervallo, poiché la scelta di _q_ ha una probabilità di _$\frac{1}{n}$_. <br />
-Nel nostro caso _n_ è 100. <br />
+si procederà ripetendo tale sottostringa fino a che la lunghezza _n_ sarà soddisfatta. \newline
+La distribuzione risulta essere ben distribuita su tutto l'intervallo, poiché la scelta di _q_ ha una probabilità di _$\frac{1}{n}$_. \newline
+Nel nostro caso _n_ è 100. \newline
 
 
 ```{r, include=FALSE}
@@ -447,9 +447,9 @@ distribution_3_graph <- ggplot(distribution_method_3, aes(x = Periodo, y = Occor
 distribution_3_graph
 ggsave("distr3.pdf")
 ```
-<br />
-Nel grafico si illustra la variante del secondo metodo. <br /> 
-Rispetto a quest'ultimo la distribuzione delle occorrenze risulta essere molto più uniforme. <br />
+\newline
+Nel grafico si illustra la variante del secondo metodo. \newline 
+Rispetto a quest'ultimo la distribuzione delle occorrenze risulta essere molto più uniforme. \newline
 
 
 
@@ -463,17 +463,17 @@ ggsave("distr4.pdf")
 ```
 
 ### Analisi del quarto metodo di generazione
-Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo. <br />
-In maniera evidente si può notare che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100). <br />
+Prevede la costruzione deterministica di una stringa che possa fungere da caso pessimo. \newline
+In maniera evidente si può notare che tutte le stringhe generate hanno come periodo la lunghezza _n_ (100). \newline
 
-<br />
-<br />
+\newline
+\newline
 
 # Considerazioni finali
-Dai dati ottenuti abbiamo potuto confermare empiricamente la complessità degli algoritmi analizzati. <br />
-Il quarto metodo di generazione delle stringhe è stato il più efficace a evidenziare la discrepanza di complessità tra i due algoritmi, specialmente nel grafico logaritmico. <br />
-I grafici ricavati relativi alla varianza, suggeriscono come i due algoritmi risentano in maniera differente della lunghezza del periodo. <br />
-La varianza maggiore osservata in _PeriodNaive_ fa suppore che i suoi tempi di esecuzione, per una data stringa _s_, dipendano fortemente dal periodo piuttosto che dalla lunghezza della stringa in sé. <br />
+Dai dati ottenuti abbiamo potuto confermare empiricamente la complessità degli algoritmi analizzati. \newline
+Il quarto metodo di generazione delle stringhe è stato il più efficace a evidenziare la discrepanza di complessità tra i due algoritmi, specialmente nel grafico logaritmico. \newline
+I grafici ricavati relativi alla varianza, suggeriscono come i due algoritmi risentano in maniera differente della lunghezza del periodo. \newline
+La varianza maggiore osservata in _PeriodNaive_ fa suppore che i suoi tempi di esecuzione, per una data stringa _s_, dipendano fortemente dal periodo piuttosto che dalla lunghezza della stringa in sé. \newline
 
 
 
