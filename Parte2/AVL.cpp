@@ -121,7 +121,7 @@ void AVL::insert(int key) {
     root = insert_rec(root, key);
 }
 
-void AVL::search(int key) {
+node* AVL::search(int key) {
     return search_rec(root, key);
 }
 
