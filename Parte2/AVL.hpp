@@ -5,6 +5,8 @@
 
 class AVL {
     private:
+        struct node;
+
         node* root;
 
         int height(node*);
