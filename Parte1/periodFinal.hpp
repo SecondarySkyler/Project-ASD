@@ -1,10 +1,6 @@
 #ifndef _PERIODFINAL_H
 #define _PERIODFINAL_H
 
-#include <iostream>
-#include <chrono>
-// #include <string.h>
-
 int periodSmart(std::string s);
 
 int periodNaive(std::string s);
