@@ -5,6 +5,7 @@
 
 class BST {
     private:
+
         struct node {
             int val;
             node* left;
@@ -20,6 +21,7 @@ class BST {
         BST();
         void insert(int key);
         node* find(int);
+        void inOrder(node*);
 };
 
 #endif
