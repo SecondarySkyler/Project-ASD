@@ -5,11 +5,7 @@
 
 class BST {
     private:
-        struct node {
-            int val;
-            node* left;
-            node* right;
-        };
+        struct node;
         
         node* root;
 
