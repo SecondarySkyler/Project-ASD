@@ -46,8 +46,8 @@ class AVL {
     }
 
     node* rightRotate(node* y) {
-        node *x = y->left;
-        node *T2 = x->right;
+        node* x = y->left;
+        node* T2 = x->right;
     
         // rotazione
         x->right = y;
@@ -67,11 +67,11 @@ class AVL {
             return(newNode(key));
         }
     
-        if(key < x->key) {
+        if (key < x->key) 
             x->left = insert(x->left, key);
-        } else if(key > x->key) {
+        else if (key > x->key) 
             x->right = insert(x->right, key);
-        }else return x;
+        else return x;
             
         // aggiornamento altezza x
         x->height = 1 + max(height(x->left), height(x->right));
@@ -79,25 +79,34 @@ class AVL {
         int bal = balance(x);
     
         // 4 casi se il sottoalbero in x è sbilanciato
-        if (bal > 1 && key < x->left->key) {
-            return rightRotate(x);
-        }
+        if (bal > 1 && key < x->left->val) return rightRotate(x);
         
-        if (bal < -1 && key > x->right->key) {
-            return leftRotate(x);
-        }
+        if (bal < -1 && key > x->right->val) return leftRotate(x);
 
-        if (bal > 1 && key > x->left->key) {
+        if (bal > 1 && key > x->left->val) {
             x->left = leftRotate(x->left);
             return rightRotate(x);
         }
 
-        if (bal < -1 && key < x->right->key) {
+        if (bal < -1 && key < x->right->val) {
             x->right = rightRotate(x->right);
             return leftRotate(node);
         }
         
         return x;
+    }
+
+    node* search_rec(int key, node* x) {
+        if (x == NULL)
+            return NULL;
+        else if (key = x->val) 
+            return x;
+        else if (key < x->val) 
+            return search_rec(key, x->left);
+        else if (key > x->val)
+            return search_rec(key, x->right);
+        else
+            return NULL;  
     }
 
     public:
@@ -112,27 +121,31 @@ void AVL::insert(int key) {
     root = insert_rec(root, key);
 }
 
+void AVL::search(int key) {
+    return search_rec(root, key);
+}
+
 void AVL::preOrder(void) {
-    if(root != NULL) {
-        cout << root->key << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+    if(x != NULL) {
+        cout << x->val << " ";
+        preOrder(x->left);
+        preOrder(x->right);
     }
 }
 
 void AVL::inOrder(void) {
-    if(root != NULL) {
-        inOrder(root->left);
-        cout << root->key << " ";
-        inOrder(root->right);
+    if(x != NULL) {
+        inOrder(x->left);
+        cout << x->val << " ";
+        inOrder(x->right);
     }
 }
 
 void AVL::postOrder(void) {
-    if(root != NULL) {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << root->key << " ";
+    if(x != NULL) {
+        postOrder(x->left);
+        postOrder(x->right);
+        cout << x->val << " ";
     }
 }
 
