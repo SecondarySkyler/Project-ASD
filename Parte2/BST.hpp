@@ -4,19 +4,28 @@
 
 
 class BST {
-    private:
-        struct node;
-        
-        node* root;
 
-        node* insert(int, node*);
-        node* find(int, node*);
 
     public:
+
+        struct node {
+            int val;
+            node* left;
+            node* right;
+        };
+
         BST();
         void insert(int key);
         node* find(int);
-        void inOrder(node*);
+        void inOrder();
+        
+
+    private:
+        node* insertM(int, node*);
+        node* findM(int, node*);
+        void inOrderM(node*);
 };
+
+
 
 #endif
