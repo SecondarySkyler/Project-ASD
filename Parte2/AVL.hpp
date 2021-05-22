@@ -4,9 +4,20 @@
 
 
 class AVL {
+    public:
+        struct node {
+            int val;
+            node* left;
+            node* right;
+            int height;
+        };
+        AVL();
+        void insert(int);
+        node* search(int);
+        void preOrder(void);
+        void inOrder(void);
+        void postOrder(void);
     private:
-        struct node;
-
         node* root;
 
         int height(node*);
@@ -16,14 +27,9 @@ class AVL {
         node* rightRotate(node*);
         node* insert_rec(node*, int);
         node* search_rec(int, node*);
-
-    public:
-        AVL();
-        void insert(int);
-        node* search(int);
-        void preOrder(void);
-        void inOrder(void);
-        void postOrder(void);
+        void preOrder(node*);
+        void inOrder(node*);
+        void postOrder(node*);
 };
 
 #endif
