@@ -2,8 +2,6 @@
 #include "BST.hpp"
 
 
-struct BST::node* root;
-
 BST::BST() {
     root = NULL;
 }

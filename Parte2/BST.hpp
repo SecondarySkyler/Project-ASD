@@ -21,6 +21,7 @@ class BST {
         
 
     private:
+        node* root;
         node* insertM(int, node*);
         node* findM(int, node*);
         void inOrderM(node*);

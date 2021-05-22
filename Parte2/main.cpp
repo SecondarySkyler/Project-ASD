@@ -5,15 +5,16 @@
 #include <string.h>
 #include "utilities.hpp"
 #include "BST.hpp"
+#include "AVL.hpp"
 
 
 const double max_error = 0.01;
 const auto resolution = getResolution();
 const double t_min = resolution * ((1 / max_error) + 1);
 
-
+// compile with g++ -g AVL.cpp BST.cpp utilities.cpp main.cpp -o main
 int main(int argc, char **argv) {
-    BST tree;
+    AVL tree;
     tree.insert(20);
     tree.insert(12);
     tree.insert(100);

@@ -7,8 +7,6 @@
 *
 */
 
-struct AVL::node* root;
-
 // funzioni ausiliarie, utili quando nodo* punta a null
 int AVL::height(node* n) {
     return (n == NULL)? 0 : n->height;
