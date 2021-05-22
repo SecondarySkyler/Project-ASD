@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utilities.hpp"
+#include "BST.hpp"
 
 
 const double max_error = 0.01;
@@ -12,7 +13,11 @@ const double t_min = resolution * ((1 / max_error) + 1);
 
 
 int main(int argc, char **argv) {
-    
+    BST tree;
+    tree.insert(20);
+    tree.insert(12);
+    tree.insert(100);
+    tree.inOrder();
 
 }
 
