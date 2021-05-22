@@ -2,7 +2,9 @@
 *
 !*.*
 !*/
-.csv
+Parte1/*.csv
+.Rhistory
+*.log
 .vscode/launch.json
 .vscode/settings.json
 .vscode/tasks.json
@@ -34,3 +36,4 @@ Parte1/distribution_method1.csv
 Parte1/distribution_method2.csv
 Parte1/distribution_method3.csv
 Parte1/distribution_method4.csv
+!Makefile
