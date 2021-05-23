@@ -23,10 +23,10 @@ class AVL {
         int height(node*);
         int balance(node*);
         node* createNode(int);
-        node* leftRotate(node*);
-        node* rightRotate(node*);
-        node* insert_rec(node*, int);
-        node* search_rec(int, node*);
+        node* leftRotate(node*&);
+        node* rightRotate(node*&);
+        node* insert(node*, int);
+        node* search(int, node*);
         void preOrder(node*);
         void inOrder(node*);
         void postOrder(node*);

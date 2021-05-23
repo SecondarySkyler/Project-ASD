@@ -18,20 +18,19 @@ int AVL::balance(node* n) {
 
 AVL::node* AVL::createNode(int k) {
     node* x;
-    x->height = 1; // foglia
+    x->height = 0; // foglia
     x->val = k;
     x->left = NULL;
     x->right = NULL;
-    return(x);
+    return x;
 }
 
-AVL::node* AVL::leftRotate(node* x) {
+AVL::node* AVL::leftRotate(node* &x) {
     node *y = x->right;
-    node *T2 = y->left;
 
     // rotazione
     y->left = x;
-    x->right = T2;
+    x->right = y->left;
 
     // aggiorno altezze
     x->height = std::max(height(x->left), height(x->right)) + 1;
@@ -41,13 +40,12 @@ AVL::node* AVL::leftRotate(node* x) {
     return y;
 }
 
-AVL::node* AVL::rightRotate(node* y) {
+AVL::node* AVL::rightRotate(node* &y) {
     node* x = y->left;
-    node* T2 = x->right;
 
     // rotazione
     x->right = y;
-    y->left = T2;
+    y->left = x->right;
 
     // aggiorno altezze
     y->height = std::max(height(y->left), height(y->right)) + 1;
@@ -57,50 +55,52 @@ AVL::node* AVL::rightRotate(node* y) {
     return x;
 }
 
-AVL::node* AVL::insert_rec(node* x, int key) {
+AVL::node* AVL::insert(node* x, int key) {
     // normale inserimento BST
     if(x == NULL) {
         return(createNode(key));
     }
 
-    if (key < x->val) 
-        x->left = insert_rec(x->left, key);
-    else if (key > x->val) 
-        x->right = insert_rec(x->right, key);
-    else return x;
+    else if (key < x->val) {
+        x->left = insert(x->left, key);
+        if(height(x->left) - height(x->right) == 2)
+            {
+                if(key < x->left->val)
+                    x = rightRotate(x);
+                else {
+                    x->left = leftRotate(x->left);
+                    x = rightRotate(x);
+                }
+            }
+    }
+    else if (key > x->val) {
+        x->right = insert(x->right, key);
+        if(height(x->right) - height(x->left) == 2)
+        {
+            if(key > x->right->val)
+                x = leftRotate(x);
+            else {
+                x->right = rightRotate(x);
+                x = leftRotate(x);
+            }
+        }
+    }
         
     // aggiornamento altezza x
     x->height = 1 + std::max(height(x->left), height(x->right));
 
-    int bal = balance(x);
-
-    // 4 casi se il sottoalbero in x è sbilanciato
-    if (bal > 1 && key < x->left->val) return rightRotate(x);
-    
-    if (bal < -1 && key > x->right->val) return leftRotate(x);
-
-    if (bal > 1 && key > x->left->val) {
-        x->left = leftRotate(x->left);
-        return rightRotate(x);
-    }
-
-    if (bal < -1 && key < x->right->val) {
-        x->right = rightRotate(x->right);
-        return leftRotate(x);
-    }
-    
     return x;
 }
 
-AVL::node* AVL::search_rec(int key, node* x) {
+AVL::node* AVL::search(int key, node* x) {
     if (x == NULL)
         return NULL;
     else if (key = x->val) 
         return x;
     else if (key < x->val) 
-        return search_rec(key, x->left);
+        return search(key, x->left);
     else if (key > x->val)
-        return search_rec(key, x->right);
+        return search(key, x->right);
     else
         return NULL;  
 }
@@ -140,11 +140,11 @@ AVL::AVL() {
 }
 
 void AVL::insert(int key) {
-    root = insert_rec(root, key);
+    root = insert(root, key);
 }
 
 AVL::node* AVL::search(int key) {
-    return search_rec(key, root);
+    return search(key, root);
 }
 
 void AVL::preOrder(void) {
