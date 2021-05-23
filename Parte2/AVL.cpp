@@ -58,7 +58,10 @@ AVL::node* AVL::rightRotate(node* &x) {
 AVL::node* AVL::insert(node* x, int key) {
     // normale inserimento BST
     if(x == NULL) {
-        return(createNode(key));
+        x = new node;
+        x->val = key;
+        x->height = 0;
+        x->left = x->right = NULL;
     }
 
     else if (key < x->val) {
@@ -80,7 +83,7 @@ AVL::node* AVL::insert(node* x, int key) {
             if(key > x->right->val)
                 x = leftRotate(x);
             else {
-                x->right = rightRotate(x);
+                x->right = rightRotate(x->right);
                 x = leftRotate(x);
             }
         }
@@ -125,7 +128,7 @@ void AVL::postOrder(node* x) {
     if(x != NULL) {
         postOrder(x->left);
         postOrder(x->right);
-        std::cout << x->val << " ";
+        std::cout << x->val << std::endl;
     }
 }
 
