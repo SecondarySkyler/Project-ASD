@@ -49,7 +49,7 @@ void calcoloTempi(BST tree) {
         } while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() < t_min);
         
         time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / iterCount;
-        csv << n << ", " << time + "\n"; // scrittura su csv 
+        csv << std::to_string(n) << ", " << std::to_string(time) + "\n"; // scrittura su csv 
         std::cout << /*treeType +*/ " Iterazione : " + std::to_string(j) << std::endl;
     }
     csv.close();
