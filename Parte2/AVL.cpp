@@ -16,14 +16,6 @@ int AVL::balance(node* n) {
     return (n == NULL)? 0 : height(n->left) - height(n->right);
 }
 
-AVL::node* AVL::createNode(int k) {
-    node* x;
-    x->height = 0; // foglia
-    x->val = k;
-    x->left = NULL;
-    x->right = NULL;
-    return x;
-}
 
 AVL::node* AVL::leftRotate(node* &x) {
     node* y = x->right;
