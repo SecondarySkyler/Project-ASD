@@ -16,7 +16,10 @@ int AVL::balance(node* n) {
     return (n == NULL)? 0 : height(n->left) - height(n->right);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4e94f238f17826ecae9078ecb4624797a8b64aa1
 AVL::node* AVL::leftRotate(node* &x) {
     node* y = x->right;
 
@@ -87,15 +90,15 @@ AVL::node* AVL::insert(node* x, int key) {
     return x;
 }
 
-AVL::node* AVL::search(int key, node* x) {
+AVL::node* AVL::find(int key, node* x) {
     if (x == NULL)
         return NULL;
     else if (key = x->val) 
         return x;
     else if (key < x->val) 
-        return search(key, x->left);
+        return find(key, x->left);
     else if (key > x->val)
-        return search(key, x->right);
+        return find(key, x->right);
     else
         return NULL;  
 }
@@ -138,8 +141,8 @@ void AVL::insert(int key) {
     root = insert(root, key);
 }
 
-AVL::node* AVL::search(int key) {
-    return search(key, root);
+AVL::node* AVL::find(int key) {
+    return find(key, root);
 }
 
 void AVL::preOrder(void) {
