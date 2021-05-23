@@ -30,7 +30,7 @@ void calcoloTempi(BST tree) {
     for (int j = 0; j < 100; j++)
     {
         int time;
-        int n = a * std::pow(100, ((j + 0.0)/99)); // calcolo numero elementi
+        int n = a * std::pow(1000, ((j + 0.0)/99)); // calcolo numero elementi
         int iterCount = 0;
         int key = 0;
         std::chrono::steady_clock::time_point end;
