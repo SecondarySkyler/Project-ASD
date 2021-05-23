@@ -26,30 +26,30 @@ AVL::node* AVL::createNode(int k) {
 }
 
 AVL::node* AVL::leftRotate(node* &x) {
-    node *y = x->right;
+    node* y = x->right;
 
     // rotazione
-    y->left = x;
     x->right = y->left;
-
+    y->left = x;
+    
     // aggiorno altezze
     x->height = std::max(height(x->left), height(x->right)) + 1;
-    y->height = std::max(height(y->left), height(y->right)) + 1;
+    y->height = std::max(height(x->right), height(x)) + 1;
 
     // return nuova radice
     return y;
 }
 
-AVL::node* AVL::rightRotate(node* &y) {
-    node* x = y->left;
+AVL::node* AVL::rightRotate(node* &x) {
+    node* y = x->left;
 
     // rotazione
-    x->right = y;
-    y->left = x->right;
+    x->left = y->right;
+    y->right = x;
 
     // aggiorno altezze
-    y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
+    y->height = std::max(height(y->left), height(x)) + 1;
 
     // return nuova radice
     return x;

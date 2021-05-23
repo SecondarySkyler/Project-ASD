@@ -14,12 +14,12 @@ const double t_min = resolution * ((1 / max_error) + 1);
 
 // compile with g++ -g AVL.cpp BST.cpp utilities.cpp main.cpp -o main
 int main(int argc, char **argv) {
-    AVL tree;
-    tree.insert(20);
-    tree.insert(12);
-    tree.insert(100);
-    tree.inOrder();
-
+    AVL* tree;
+    tree->insert(20);
+    tree->insert(12);
+    tree->insert(100);
+    tree->inOrder();
+    delete tree;
 }
 
 void calcoloTempi(/*treeType*/) {
