@@ -16,6 +16,10 @@ int AVL::balance(node* n) {
     return (n == NULL)? 0 : height(n->left) - height(n->right);
 }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 4e94f238f17826ecae9078ecb4624797a8b64aa1
 AVL::node* AVL::leftRotate(node* &x) {
     node* y = x->right;
 
