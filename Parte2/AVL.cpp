@@ -86,15 +86,15 @@ AVL::node* AVL::insert(node* x, int key) {
     return x;
 }
 
-AVL::node* AVL::search(int key, node* x) {
+AVL::node* AVL::find(int key, node* x) {
     if (x == NULL)
         return NULL;
     else if (key = x->val) 
         return x;
     else if (key < x->val) 
-        return search(key, x->left);
+        return find(key, x->left);
     else if (key > x->val)
-        return search(key, x->right);
+        return find(key, x->right);
     else
         return NULL;  
 }
@@ -137,8 +137,8 @@ void AVL::insert(int key) {
     root = insert(root, key);
 }
 
-AVL::node* AVL::search(int key) {
-    return search(key, root);
+AVL::node* AVL::find(int key) {
+    return find(key, root);
 }
 
 void AVL::preOrder(void) {

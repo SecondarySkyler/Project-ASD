@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     tree.insert(100);
     tree.inOrder();
     // delete tree;
+    std::cout << std::endl;
 }
 
 void calcoloTempi(/*treeType*/) {
