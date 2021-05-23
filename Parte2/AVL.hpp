@@ -22,7 +22,6 @@ class AVL {
 
         int height(node*);
         int balance(node*);
-        node* createNode(int);
         node* leftRotate(node*&);
         node* rightRotate(node*&);
         node* insert(node*, int);
