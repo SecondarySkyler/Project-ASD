@@ -8,25 +8,24 @@
 #include "BST.hpp"
 #include "AVL.hpp"
 
-const int a = 1000;
+const int a = 1000000;
 const double max_error = 0.01;
 const auto resolution = getResolution();
 const double t_min = resolution * ((1 / max_error) + 1);
 
-void calcoloTempi(AVL);
+void calcoloTempi(BST);
 
 // compile with g++ -g AVL.cpp BST.cpp utilities.cpp main.cpp -o main
 int main(int argc, char **argv) {
-    AVL tree;
+    BST tree;
     calcoloTempi(tree);
     std::cout << std::endl;
 }
 
-void calcoloTempi(AVL tree) {
+void calcoloTempi(BST tree) {
 
-    std::ofstream csv(/*treeType + */"AVL.csv"); // csv per la scrittura
+    std::ofstream csv(/*treeType + */"BST.csv"); // csv per la scrittura
 
-    // Calcolo tempi Naive
     for (int j = 0; j < 100; j++)
     {
         double time;
