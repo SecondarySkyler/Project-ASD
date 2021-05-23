@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 
 void calcoloTempi(BST tree) {
 
-    std::ofstream csv(/*treeType + */".csv"); // csv per la scrittura
+    std::ofstream csv(/*treeType + */"BST.csv"); // csv per la scrittura
 
     // Calcolo tempi Naive
     for (int j = 0; j < 100; j++)
@@ -49,7 +49,7 @@ void calcoloTempi(BST tree) {
         } while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() < t_min);
         
         time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / iterCount;
-        csv << n << ", " << time + "\n"; // scrittura su csv 
+        csv << std::to_string(n) << ", " << std::to_string(time) + "\n"; // scrittura su csv 
         std::cout << /*treeType +*/ " Iterazione : " + std::to_string(j) << std::endl;
     }
     csv.close();
