@@ -4,10 +4,13 @@
 class RBT {
         
     public:
+        enum class Color {BLACK, RED};
+
         struct node {
             int val;
             node* left;
             node* right;
+            Color colore;
         };
 
         RBT();
