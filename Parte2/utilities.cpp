@@ -1,6 +1,6 @@
 #include <string.h>
 #include <chrono>
-#include "utilities.hpp"
+#include "headers/utilities.hpp"
 
 double getResolution() {
     std::chrono::steady_clock::time_point end;

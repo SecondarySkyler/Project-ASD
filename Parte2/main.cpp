@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "utilities.hpp"
-#include "BST.hpp"
-#include "AVL.hpp"
+#include "headers/utilities.hpp"
+#include "headers/BST.hpp"
+#include "headers/AVL.hpp"
 
 const int a = 1000000;
 const double max_error = 0.01;

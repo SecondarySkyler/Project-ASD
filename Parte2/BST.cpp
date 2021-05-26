@@ -1,5 +1,5 @@
 #include <iostream>
-#include "BST.hpp"
+#include "headers/BST.hpp"
 
 
 BST::BST() {
