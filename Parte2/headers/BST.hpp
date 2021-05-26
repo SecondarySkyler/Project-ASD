@@ -15,7 +15,7 @@ class BST {
         };
 
         BST();
-        void insert(int key);
+        void insert(int);
         node* find(int);
         void inOrder();
         
