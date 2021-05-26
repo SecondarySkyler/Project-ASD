@@ -3,6 +3,7 @@
 !*.*
 !*/
 Parte1/*.csv
+Parte1/Relazione_files/*
 .Rhistory
 *.log
 .vscode/launch.json
