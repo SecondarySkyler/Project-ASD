@@ -8,6 +8,7 @@ class RBT {
 
         struct node {
             int val;
+            node* parent;
             node* left;
             node* right;
             Color colore;
@@ -20,6 +21,7 @@ class RBT {
         
     private:
         node* root;
+        node* parent(node*);
         node* insert(int, node*);
         node* find(int, node*);
         node* leftRotate(node*&);
