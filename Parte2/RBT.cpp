@@ -5,15 +5,30 @@
 /**
  * Implementazione funzioni private
  */
+RBT::node* RBT::parent(node* tree) {
+    return tree->parent;
+}
+
 RBT::node* RBT::insert(int key, node* tree) {
     if (tree == NULL)
     {
         tree = new node;
         tree->val = key;
         tree->left = tree->right = NULL;
-        tree->colore = Color::BLACK;
+        tree->colore = Color::RED;
     }
     // more to add
+    if (parent(tree) == NULL)
+    {
+        tree->colore = Color::BLACK;
+    }
+
+    if (key < tree->val)
+        tree->left = insert(key, tree->left);
+    else if (key > tree->val)
+        tree->right = insert(key, tree->right);
+    
+    return tree;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
