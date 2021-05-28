@@ -44,6 +44,16 @@ RBT::node* RBT::find(int keyToFind, node* tree) {
         return NULL;
 }
 
+
+void RBT::inOrder(node *tree) {
+    if (tree != NULL)
+    {
+        inOrder(tree->left);
+        std::cout << tree->val << std::endl;
+        inOrder(tree->right);
+    }
+}
+
 /**
  * Implementazione funzioni pubbliche
  */
@@ -62,4 +72,14 @@ RBT::node* RBT::find(int keyToFind) {
 
 void RBT::inOrder() {
     inOrder(root);
+}
+
+int main(int argc, char const *argv[])
+{
+    RBT tree;
+    tree.insert(5);
+    tree.insert(10);
+    tree.insert(3);
+    tree.inOrder();
+    return 0;
 }
