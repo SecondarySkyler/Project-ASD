@@ -13,7 +13,7 @@ class RBT {
             node* right;
             Color colore;
             bool isLeft() {
-                return val < parent->val; 
+                return parent!= nullptr && val < parent->val; 
             }
         };
 
@@ -29,8 +29,8 @@ class RBT {
         void balance(node*);
         node* insert(int, node*);
         node* find(int, node*);
-        void leftRotate(node*&);
-        void rightRotate(node*&);
+        void leftRotate(node*);
+        void rightRotate(node*);
         void inOrder(node*);
         int heightChecker(node*);
 };
