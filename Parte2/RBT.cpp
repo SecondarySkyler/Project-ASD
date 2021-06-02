@@ -9,11 +9,11 @@ RBT::node* RBT::parent(node* tree) {
     return tree->parent;
 }
 
-void RBT::balance(node* tree) {
+void RBT::balance(node *tree) {
 
-    if (tree->isLeft() & tree->parent->isLeft()) // lo zio se esiste e' right
+    if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
     {
-        if (tree->parent->parent->right = NULL)
+        if (tree->parent->parent->right == nullptr)
         {
             rightRotate(tree->parent->parent);
             tree->parent->colore = Color::BLACK;
@@ -39,11 +39,11 @@ void RBT::balance(node* tree) {
         }
         
     } 
-    else if ((!tree->isLeft()) & (!tree->parent->isLeft()))
+    else if ((!tree->isLeft()) && (!tree->parent->isLeft()))
     {
-        if (tree->parent->parent->left = NULL)
+        if (tree->parent->parent->left == nullptr)
         {
-            rightRotate(tree->parent->parent);
+            leftRotate(tree->parent->parent);
             tree->parent->colore = Color::BLACK;
             tree->parent->left->colore = Color::RED;
             return;
@@ -82,19 +82,14 @@ void RBT::balance(node* tree) {
 }
 
 RBT::node* RBT::insert(int key, node* tree) {
-    if (tree == NULL)
+    if (tree == nullptr)
     {
         tree = new node;
         tree->val = key;
         tree->parent = tree->left = tree->right = nullptr;
-        tree->colore = Color::RED;
-    }
-    // more to add
-    if (parent(tree) == NULL)
-    {
         tree->colore = Color::BLACK;
     }
-
+    
     if (key < tree->val)
     {
         if (tree->left == nullptr)
@@ -102,13 +97,19 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->left = new node;
             tree->left->val = key;
             tree->left->parent = tree;
-            tree->left->left = tree->left->right = NULL;
+            tree->left->left = tree->left->right = nullptr;
             tree->left->colore = Color::RED;
+            if (tree->colore == Color::RED)
+            {
+                balance(tree->left);
+            }
         }
         else
         {
             tree->left = insert(key, tree->left);
-        }
+        }    
+
+
     }
     else if (key > tree->val)
     {
@@ -117,8 +118,12 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->right = new node;
             tree->right->val = key;
             tree->right->parent = tree;
-            tree->right->left = tree->right->right = NULL;
+            tree->right->left = tree->right->right = nullptr;
             tree->right->colore = Color::RED;
+            if (tree->colore == Color::RED)
+            {
+                balance(tree->right);
+            }
         }
         else
         {
@@ -127,18 +132,18 @@ RBT::node* RBT::insert(int key, node* tree) {
     }
 
     // check the need to restablish the invariant
-    if (tree->parent != NULL && tree->colore == Color::RED && tree->parent->colore == Color::RED)
-    {
-        balance(tree);
-    }
+    // if (tree->parent != NULL && tree->colore == Color::RED && tree->parent->colore == Color::RED)
+    // {
+    //     balance(tree);
+    // }
     
     
     return tree;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
-    if (tree == NULL)
-        return NULL;
+    if (tree == nullptr)
+        return nullptr;
     else if (keyToFind = tree->val) 
         return tree;
     else if (keyToFind < tree->val) 
@@ -146,20 +151,21 @@ RBT::node* RBT::find(int keyToFind, node* tree) {
     else if (keyToFind > tree->val)
         return find(keyToFind, tree->right);
     else
-        return NULL;
+        return nullptr;
 }
 
-void RBT::leftRotate(node*& tree) {
+void RBT::leftRotate(node* tree) {
     node *right_child = tree->right;
     tree->right = right_child->left;
 
     if (tree->right != nullptr)
+    {
         tree->right->parent = tree;
-
+    }
     right_child->parent = tree->parent;
 
     if (tree->parent == nullptr)
-        root = right_child;
+        tree = right_child;
     else if (tree == tree->parent->left)
         tree->parent->left = right_child;
     else
@@ -170,7 +176,7 @@ void RBT::leftRotate(node*& tree) {
 }
 
 
-void RBT::rightRotate(node*& tree) {
+void RBT::rightRotate(node* tree) {
     node *left_child = tree->left;
     tree->left = left_child->right;
 
@@ -188,10 +194,11 @@ void RBT::rightRotate(node*& tree) {
 
     left_child->right = tree;
     tree->parent = left_child;
+
 }
 
 void RBT::inOrder(node *tree) {
-    if (tree != NULL)
+    if (tree != nullptr)
     {
         inOrder(tree->left);
         std::cout << tree->val << std::endl;
@@ -214,7 +221,7 @@ int RBT::heightChecker(node* n) {
  */
 
 RBT::RBT() {
-    root = NULL;
+    root = nullptr;
 }
 
 void RBT::insert(int key) {
@@ -240,6 +247,17 @@ int main(int argc, char const *argv[])
     tree.insert(24);
     tree.insert(34);
     // tree.inOrder();
+   
+   
+   
+   
+    // for (int i = 0; i < 100; i++)
+    // {
+    //     tree.insert(i);
+    // }
+    int h = tree.heightChecker();
+    std::cout << h << std::endl;
+    
 
     return 0;
 }
