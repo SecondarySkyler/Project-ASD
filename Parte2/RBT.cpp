@@ -5,9 +5,6 @@
 /**
  * Implementazione funzioni private
  */
-RBT::node* RBT::parent(node* tree) {
-    return tree->parent;
-}
 
 RBT::node* RBT::balance(node *tree) {
 
@@ -44,22 +41,22 @@ RBT::node* RBT::balance(node *tree) {
         if (tree->parent->parent->left == nullptr)
         {
             tree = leftRotate(tree->parent->parent);
-            tree->parent->colore = Color::BLACK;
-            tree->parent->left->colore = Color::RED;
+            tree->colore = Color::BLACK;
+            tree->left->colore = Color::RED;
             return tree;
         }
         // caso 1 dx
         if (tree->parent->parent->left->colore == Color::BLACK)    
         {
             tree = leftRotate(tree->parent->parent);
-            tree->parent->colore = Color::BLACK;
-            tree->parent->left->colore = Color::RED;
+            tree->colore = Color::BLACK;
+            tree->left->colore = Color::RED;
             return tree;
         }
         else // zio rosso
         {
-            tree->parent->colore = Color::BLACK;
             tree->parent->parent->colore = Color::RED;
+            tree->parent->colore = Color::BLACK;
             tree->parent->parent->left->colore = Color::BLACK;
             tree = balance(tree->parent->parent);
             return tree;
@@ -152,13 +149,12 @@ RBT::node* RBT::leftRotate(node *tree) {
     tree->right = right_child->left;
 
     if (tree->right != nullptr)
-    {
         tree->right->parent = tree;
-    }
+
     right_child->parent = tree->parent;
 
     if (tree->parent == nullptr)
-        tree = right_child;
+        root = right_child;
     else if (tree == tree->parent->left)
         tree->parent->left = right_child;
     else
@@ -167,11 +163,12 @@ RBT::node* RBT::leftRotate(node *tree) {
     right_child->left = grandFather;
     grandFather->parent = right_child;
 
-    return tree;
+    return right_child;
 }
 
 
 RBT::node* RBT::rightRotate(node *tree) {
+    node *grandFather = tree;
     node *left_child = tree->left;
     tree->left = left_child->right;
 
@@ -189,6 +186,7 @@ RBT::node* RBT::rightRotate(node *tree) {
 
     left_child->right = tree;
     tree->parent = left_child;
+    grandFather->parent = left_child;
 
     return tree;
 }
@@ -203,7 +201,7 @@ void RBT::inOrder(node *tree) {
 }
 
 int RBT::heightChecker(node* n) {
-    int count = 1;
+    int count = 0;
     while (n->right != nullptr)
     {
         n = n->right;
