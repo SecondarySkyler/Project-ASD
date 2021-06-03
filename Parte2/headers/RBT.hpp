@@ -26,11 +26,11 @@ class RBT {
     private:
         node* root;
         node* parent(node*);
-        void balance(node*);
+        node* balance(node*);
         node* insert(int, node*);
         node* find(int, node*);
-        void leftRotate(node*);
-        void rightRotate(node*);
+        node* leftRotate(node*);
+        node* rightRotate(node*);
         void inOrder(node*);
         int heightChecker(node*);
 };
