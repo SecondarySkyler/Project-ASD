@@ -96,10 +96,7 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->left->parent = tree;
             tree->left->left = tree->left->right = nullptr;
             tree->left->colore = Color::RED;
-            if (tree->colore == Color::RED)
-            {
-                tree = balance(tree->left);
-            }
+            tree = tree->left;
         }
         else
         {
@@ -117,17 +114,17 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->right->parent = tree;
             tree->right->left = tree->right->right = nullptr;
             tree->right->colore = Color::RED;
-            if (tree->colore == Color::RED)
-            {
-                tree = balance(tree->right);
-            }
+            tree = tree->right;
         }
         else
         {
             tree->right = insert(key, tree->right);
         }
     }
-    return tree;
+
+    if(tree->parent == nullptr) root = tree;
+
+    return (tree != root && tree->parent->colore == Color::RED) ? balance(tree) : tree;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
