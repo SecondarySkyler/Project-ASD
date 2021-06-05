@@ -6,6 +6,9 @@
  * Implementazione funzioni private
  */
 
+/**
+ * @tree è il figlio appena inserito
+ */
 RBT::node* RBT::balance(node *tree) {
 
     if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
@@ -121,7 +124,7 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->right = insert(key, tree->right);
         }
     }
-
+    
     if(tree->parent == nullptr) root = tree;
 
     return (tree != root && tree->parent->colore == Color::RED) ? balance(tree) : tree;
@@ -147,7 +150,7 @@ RBT::node* RBT::leftRotate(node *tree) {
 
     if (tree->right != nullptr)
         tree->right->parent = tree;
-
+    
     right_child->parent = tree->parent;
 
     if (tree->parent == nullptr)
