@@ -22,6 +22,7 @@ class RBT {
         node* find(int);
         void inOrder();
         int heightChecker();
+        #define isLeft(x) (x->parent->left == x ? true : false)
         
     private:
         node* root;
@@ -33,6 +34,8 @@ class RBT {
         node* rightRotate(node*);
         void inOrder(node*);
         int heightChecker(node*);
+        node* fixTree(node*);
+        node* retrieveUncle(node*, bool*);
 };
 
 
