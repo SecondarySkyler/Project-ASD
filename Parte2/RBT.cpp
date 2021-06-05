@@ -5,81 +5,127 @@
 /**
  * Implementazione funzioni private
  */
+RBT::node* RBT::retrieveUncle(node* nephew, bool *zioPosition) {
+    if (nephew != nullptr && nephew->parent != nullptr && nephew->parent->parent != nullptr)
+    {
+        if (isLeft(nephew->parent)) // se true => padre e' sinistro => zio e' destro
+        {
+            *zioPosition = isLeft(nephew);
+            return nephew->parent->parent->right;
+        }
+        else
+        {
+            *zioPosition = !isLeft(nephew);
+            return nephew->parent->parent->left;
+        }   
+    }
+    return nullptr;
+}
 
+RBT::node* RBT::fixTree(node *tree) {
+    if (tree != nullptr && tree->parent != nullptr && tree->parent->colore == Color::RED)
+    {
+        bool isLeftSon = isLeft(tree);
+        bool isLeftZio = true;
+        node *zio = retrieveUncle(tree, &isLeftZio);
+        if ( (zio == nullptr || zio->colore == Color::BLACK) && isLeftZio ) // se zio anche opposto => caso 1
+        {
+            tree->parent->parent->colore = Color::RED;
+            tree->parent->colore = Color::BLACK;
+            tree = isLeftSon ? rightRotate(tree->parent->parent) : leftRotate(tree->parent->parent);
+        } 
+        else if (zio == nullptr || zio->colore == Color::BLACK) // se zio NON opposto => caso 2
+        {
+            tree = isLeftSon ? rightRotate(tree->parent) : leftRotate(tree->parent);
+            tree = fixTree(tree->parent);
+        }
+        else { // zio opposto e rosso => caso 3
+            tree->parent->colore = zio->colore = Color::BLACK;
+            tree->parent->parent->colore = Color::RED;
+            tree = fixTree(tree->parent->parent);
+        }
+    }
+    else if (tree != nullptr && tree->parent == nullptr)
+    {
+        tree->colore = Color::BLACK;
+        root = tree;
+    }
+    return tree;
+}
 /**
  * @tree è il figlio appena inserito
  */
-RBT::node* RBT::balance(node *tree) {
+// RBT::node* RBT::balance(node *tree) {
 
-    if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
-    {
-        if (tree->parent->parent->right == nullptr)
-        {
-            tree = rightRotate(tree->parent->parent);
-            tree->parent->colore = Color::BLACK;
-            tree->parent->right->colore = Color::RED;
-            return tree;
-        }
+//     if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
+//     {
+//         if (tree->parent->parent->right == nullptr)
+//         {
+//             tree = rightRotate(tree->parent->parent);
+//             tree->parent->colore = Color::BLACK;
+//             tree->parent->right->colore = Color::RED;
+//             return tree;
+//         }
         
-        // caso 1 sx 
-        if (tree->parent->parent->right->colore == Color::BLACK)    
-        {
-            tree = rightRotate(tree->parent->parent);
-            tree->parent->colore = Color::BLACK;
-            tree->parent->right->colore = Color::RED;
-            return tree;
-        }
-        else // zio rosso
-        {
-            tree->parent->colore = Color::BLACK;
-            tree->parent->parent->colore = Color::RED;
-            tree->parent->parent->right->colore = Color::BLACK;
-            tree = balance(tree->parent->parent);
-            return tree;
-        }
+//         // caso 1 sx 
+//         if (tree->parent->parent->right->colore == Color::BLACK)    
+//         {
+//             tree = rightRotate(tree->parent->parent);
+//             tree->parent->colore = Color::BLACK;
+//             tree->parent->right->colore = Color::RED;
+//             return tree;
+//         }
+//         else // zio rosso
+//         {
+//             tree->parent->colore = Color::BLACK;
+//             tree->parent->parent->colore = Color::RED;
+//             tree->parent->parent->right->colore = Color::BLACK;
+//             tree = balance(tree->parent->parent);
+//             return tree;
+//         }
         
-    } 
-    else if ((!tree->isLeft()) && (!tree->parent->isLeft()))
-    {
-        if (tree->parent->parent->left == nullptr)
-        {
-            tree = leftRotate(tree->parent->parent);
-            tree->colore = Color::BLACK;
-            tree->left->colore = Color::RED;
-            return tree;
-        }
-        // caso 1 dx
-        if (tree->parent->parent->left->colore == Color::BLACK)    
-        {
-            tree = leftRotate(tree->parent->parent);
-            tree->colore = Color::BLACK;
-            tree->left->colore = Color::RED;
-            return tree;
-        }
-        else // zio rosso
-        {
-            tree->parent->parent->colore = Color::RED;
-            tree->parent->colore = Color::BLACK;
-            tree->parent->parent->left->colore = Color::BLACK;
-            tree = balance(tree->parent->parent);
-            return tree;
-        }
+//     } 
+//     else if ((!tree->isLeft()) && (!tree->parent->isLeft()))
+//     {
+//         if (tree->parent->parent->left == nullptr)
+//         {
+//             tree = leftRotate(tree->parent->parent);
+//             tree->colore = Color::BLACK;
+//             tree->left->colore = Color::RED;
+//             return tree;
+//         }
+//         // caso 1 dx
+//         if (tree->parent->parent->left->colore == Color::BLACK)    
+//         {
+//             tree = leftRotate(tree->parent->parent);
+//             tree->colore = Color::BLACK;
+//             tree->left->colore = Color::RED;
+//             return tree;
+//         }
+//         else // zio rosso
+//         {
+//             tree->parent->parent->colore = Color::RED;
+//             tree->parent->colore = Color::BLACK;
+//             tree->parent->parent->left->colore = Color::BLACK;
+//             tree = balance(tree->parent->parent);
+//             return tree;
+//         }
 
-    }
-    else if (tree->isLeft() && !tree->parent->isLeft()) // caso 2 sx
-    {
-        tree = leftRotate(tree->parent);
-        tree = balance(tree->left);
-        return tree;
-    }
-    else if (!tree->isLeft() && tree->parent->isLeft()) // caso 2 dx
-    {
-        tree = rightRotate(tree->parent);
-        tree = balance(tree->right);
-        return tree;
-    }
-  return tree;
-}
+//     }
+//     else if (tree->isLeft() && !tree->parent->isLeft()) // caso 2 sx
+//     {
+//         tree = leftRotate(tree->parent);
+//         tree = balance(tree->left);
+//         return tree;
+//     }
+//     else if (!tree->isLeft() && tree->parent->isLeft()) // caso 2 dx
+//     {
+//         tree = rightRotate(tree->parent);
+//         tree = balance(tree->right);
+//         return tree;
+//     }
+//   return tree;
+// }
 
 RBT::node* RBT::insert(int key, node* tree) {
     if (tree == nullptr)
@@ -127,7 +173,7 @@ RBT::node* RBT::insert(int key, node* tree) {
     
     if(tree->parent == nullptr) root = tree;
 
-    return (tree != root && tree->parent->colore == Color::RED) ? balance(tree) : tree;
+    return (tree != root && tree->parent->colore == Color::RED) ? fixTree(tree) : tree;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
@@ -166,9 +212,10 @@ RBT::node* RBT::leftRotate(node *tree) {
     return right_child;
 }
 
-
+// tree 
 RBT::node* RBT::rightRotate(node *tree) {
     node *grandFather = tree;
+    tree->parent = tree->left;
     node *left_child = tree->left;
     tree->left = left_child->right;
 
@@ -237,18 +284,18 @@ int RBT::heightChecker() {
 int main(int argc, char const *argv[])
 {
     RBT tree;
-    tree.insert(5);
-    tree.insert(24);
-    tree.insert(34);
+    // tree.insert(5);
+    // tree.insert(24);
+    // tree.insert(34);
     // tree.inOrder();
    
    
    
    
-    // for (int i = 1; i < 10; i++)
-    // {
-    //     tree.insert(i);
-    // }
+    for (int i = 1; i < 10; i++)
+    {
+        tree.insert(i);
+    }
     int h = tree.heightChecker();
     std::cout << h << std::endl;
     
