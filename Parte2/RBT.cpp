@@ -7,8 +7,10 @@
  */
 
 RBT::node* RBT::balance(node *tree) {
-
-    if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
+    if (tree->parent == nullptr) {
+        tree->colore = Color::BLACK;
+    }
+    else if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
     {
         if (tree->parent->parent->right == nullptr)
         {
@@ -26,12 +28,13 @@ RBT::node* RBT::balance(node *tree) {
             tree->parent->right->colore = Color::RED;
             return tree;
         }
-        else // zio rosso
+        else // caso 3 sx
         {
             tree->parent->colore = Color::BLACK;
             tree->parent->parent->colore = Color::RED;
             tree->parent->parent->right->colore = Color::BLACK;
-            tree = balance(tree->parent->parent);
+            if (tree->parent->parent != nullptr) tree = balance(tree->parent->parent);
+            else tree->colore = Color::BLACK;
             return tree;
         }
         
@@ -53,12 +56,13 @@ RBT::node* RBT::balance(node *tree) {
             tree->left->colore = Color::RED;
             return tree;
         }
-        else // zio rosso
+        else // caso 3 dx
         {
             tree->parent->parent->colore = Color::RED;
             tree->parent->colore = Color::BLACK;
             tree->parent->parent->left->colore = Color::BLACK;
-            tree = balance(tree->parent->parent);
+            if (tree->parent->parent != nullptr) tree = balance(tree->parent->parent);
+            else tree->colore = Color::BLACK;
             return tree;
         }
 
@@ -75,7 +79,12 @@ RBT::node* RBT::balance(node *tree) {
         tree = balance(tree->right);
         return tree;
     }
-  return tree;
+
+    if(tree->parent == nullptr) {
+        tree->colore = Color::BLACK;
+        root = tree;
+    }
+    return tree;
 }
 
 RBT::node* RBT::insert(int key, node* tree) {
@@ -85,6 +94,7 @@ RBT::node* RBT::insert(int key, node* tree) {
         tree->val = key;
         tree->parent = tree->left = tree->right = nullptr;
         tree->colore = Color::BLACK;
+        root = tree;
     }
     
     if (key < tree->val)
@@ -121,8 +131,6 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->right = insert(key, tree->right);
         }
     }
-
-    if(tree->parent == nullptr) root = tree;
 
     return (tree != root && tree->parent->colore == Color::RED) ? balance(tree) : tree;
 }
@@ -234,18 +242,12 @@ int RBT::heightChecker() {
 int main(int argc, char const *argv[])
 {
     RBT tree;
-    tree.insert(5);
-    tree.insert(24);
-    tree.insert(34);
-    // tree.inOrder();
-   
-   
-   
-   
-    // for (int i = 1; i < 10; i++)
-    // {
-    //     tree.insert(i);
-    // }
+    
+    for (int i = 1; i < 10; i++)
+    {
+        tree.insert(i);
+    }
+
     int h = tree.heightChecker();
     std::cout << h << std::endl;
     
