@@ -13,7 +13,7 @@ class RBT {
             node* right;
             Color colore;
             bool isLeft() {
-                return parent!= nullptr && val < parent->val; 
+                return this != nullptr && parent!= nullptr && val < parent->val; 
             }
         };
 
