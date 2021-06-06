@@ -32,7 +32,7 @@ RBT::node* RBT::fixTree(node *tree) {
         {
             tree->parent->parent->colore = Color::RED;
             tree->parent->colore = Color::BLACK;
-            tree = isLeftSon ? rightRotate(tree->parent->parent) : leftRotate(tree->parent->parent);
+            tree = isLeftSon ? rightRotate(tree->parent) : leftRotate(tree->parent);
         } 
         else if (zio == nullptr || zio->colore == Color::BLACK) // se zio NON opposto => caso 2
         {
@@ -212,30 +212,56 @@ RBT::node* RBT::leftRotate(node *tree) {
     return right_child;
 }
 
-// tree 
+// tree viene passato come genitore del nodo appena inserito
 RBT::node* RBT::rightRotate(node *tree) {
-    node *grandFather = tree;
-    tree->parent = tree->left;
-    node *left_child = tree->left;
-    tree->left = left_child->right;
+    node *dad = tree->parent;
+    node *rightSon = tree->right;
 
-    if (tree->left != nullptr)
-        tree->left->parent = tree;
-
-    left_child->parent = tree->parent;
-
-    if (tree->parent == nullptr)
-        root = left_child;
-    else if (tree == tree->parent->left)
-        tree->parent->left = left_child;
+    if (dad != root)
+    {
+        if (dad == dad->parent->left)
+        {
+            tree->parent->parent->left = tree;
+        }
+        else
+        {
+            tree->parent->parent->right = tree;
+        }
+        tree->parent = dad->parent;
+    }
     else
-        tree->parent->right = left_child;
-
-    left_child->right = tree;
-    tree->parent = left_child;
-    grandFather->parent = left_child;
-
+    {
+        root = tree;
+        tree->parent = nullptr;
+    }
+    tree->right = dad;
+    dad->left = rightSon;
+    dad->parent = tree;
+    if (rightSon != nullptr)
+    {
+        rightSon->parent = dad;
+    }
+    
     return tree;
+    
+    
+    // if (tree->left != nullptr)
+    //     tree->left->parent = tree;
+
+    // left_child->parent = tree->parent;
+
+    // if (tree->parent == nullptr)
+    //     root = left_child;
+    // else if (tree == tree->parent->left)
+    //     tree->parent->left = left_child;
+    // else
+    //     tree->parent->right = left_child;
+
+    // left_child->right = tree;
+    // tree->parent = left_child;
+    // grandFather->parent = left_child;
+
+    // return tree;
 }
 
 void RBT::inOrder(node *tree) {
