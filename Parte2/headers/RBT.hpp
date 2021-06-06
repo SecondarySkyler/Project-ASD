@@ -23,21 +23,26 @@ class RBT {
         void inOrder();
         int heightChecker();
         int leftHeightChecker();
+        int blackHeight();
         #define isLeft(x) (x->parent->left == x ? true : false)
         
     private:
         node* root;
         node* parent(node*);
         node* balance(node*);
-        node* insert(int, node*);
+        node* insert(int, node*&);
+        node* bstInsert(node*, node*&);
         node* find(int, node*);
         node* leftRotate(node*);
         node* rightRotate(node*);
         void inOrder(node*);
         int heightChecker(node*);
         int leftHeightChecker(node*);
+        int blackHeight(node*);
         node* fixTree(node*);
         node* retrieveUncle(node*, bool*);
+        // funzioni da eliminare
+        node* createNode(int);
 };
 
 

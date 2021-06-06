@@ -52,131 +52,58 @@ RBT::node* RBT::fixTree(node *tree) {
     }
     return tree;
 }
-/**
- * @tree è il figlio appena inserito
- */
-// RBT::node* RBT::balance(node *tree) {
 
-//     if (tree->isLeft() && tree->parent->isLeft()) // lo zio se esiste e' right
-//     {
-//         if (tree->parent->parent->right == nullptr)
-//         {
-//             tree = rightRotate(tree->parent->parent);
-//             tree->parent->colore = Color::BLACK;
-//             tree->parent->right->colore = Color::RED;
-//             return tree;
-//         }
-        
-//         // caso 1 sx 
-//         if (tree->parent->parent->right->colore == Color::BLACK)    
-//         {
-//             tree = rightRotate(tree->parent->parent);
-//             tree->parent->colore = Color::BLACK;
-//             tree->parent->right->colore = Color::RED;
-//             return tree;
-//         }
-//         else // zio rosso
-//         {
-//             tree->parent->colore = Color::BLACK;
-//             tree->parent->parent->colore = Color::RED;
-//             tree->parent->parent->right->colore = Color::BLACK;
-//             tree = balance(tree->parent->parent);
-//             return tree;
-//         }
-        
-//     } 
-//     else if ((!tree->isLeft()) && (!tree->parent->isLeft()))
-//     {
-//         if (tree->parent->parent->left == nullptr)
-//         {
-//             tree = leftRotate(tree->parent->parent);
-//             tree->colore = Color::BLACK;
-//             tree->left->colore = Color::RED;
-//             return tree;
-//         }
-//         // caso 1 dx
-//         if (tree->parent->parent->left->colore == Color::BLACK)    
-//         {
-//             tree = leftRotate(tree->parent->parent);
-//             tree->colore = Color::BLACK;
-//             tree->left->colore = Color::RED;
-//             return tree;
-//         }
-//         else // zio rosso
-//         {
-//             tree->parent->parent->colore = Color::RED;
-//             tree->parent->colore = Color::BLACK;
-//             tree->parent->parent->left->colore = Color::BLACK;
-//             tree = balance(tree->parent->parent);
-//             return tree;
-//         }
+RBT::node* RBT::bstInsert(node *nodo, node *&root) {
+    node *n = root;
+    node *aux = nullptr;
 
-//     }
-//     else if (tree->isLeft() && !tree->parent->isLeft()) // caso 2 sx
-//     {
-//         tree = leftRotate(tree->parent);
-//         tree = balance(tree->left);
-//         return tree;
-//     }
-//     else if (!tree->isLeft() && tree->parent->isLeft()) // caso 2 dx
-//     {
-//         tree = rightRotate(tree->parent);
-//         tree = balance(tree->right);
-//         return tree;
-//     }
-//   return tree;
-// }
-
-RBT::node* RBT::insert(int key, node* tree) {
-    if (tree == nullptr)
+    while (n != nullptr)
     {
-        tree = new node;
-        tree->val = key;
-        tree->parent = tree->left = tree->right = nullptr;
-        tree->colore = Color::BLACK;
-    }
-    
-    if (key < tree->val)
-    {
-        if (tree->left == nullptr)
+        aux = n;
+        if (nodo->val < n->val)
         {
-            tree->left = new node;
-            tree->left->val = key;
-            tree->left->parent = tree;
-            tree->left->left = tree->left->right = nullptr;
-            tree->left->colore = Color::RED;
-            // tree = tree->left;
-        }
-        else
-        {
-            tree->left = insert(key, tree->left);
-        }    
-
-
-    }
-    else if (key > tree->val)
-    {
-        if (tree->right == nullptr)
-        {
-            tree->right = new node;
-            tree->right->val = key;
-            tree->right->parent = tree;
-            tree->right->left = tree->right->right = nullptr;
-            tree->right->colore = Color::RED;
-            // tree = tree->right;
-        }
-        else
-        {
-            tree->right = insert(key, tree->right);
+            n = n->left;
+        } else {
+            n = n->right;
         }
     }
     
-    if (tree->parent != nullptr && tree->parent->parent != nullptr && tree->parent->colore == Color::RED)
+
+    if (aux == nullptr)
     {
-        tree = fixTree(tree);
+        root = nodo;
+    } else {
+        nodo->parent = aux;
+        if (nodo->val < aux->val)
+        {
+            aux->left = nodo;
+        } else {
+            aux->right = nodo;
+        }
     }
 
-    return tree;
+    return root;
+}
+
+RBT::node* RBT::createNode(int key) {
+    node* newNode = new node;
+    newNode->val = key;
+    newNode->left = newNode->right = newNode->parent = nullptr;
+    return newNode;
+}
+
+RBT::node* RBT::insert(int key, node *&root) {
+    node* nodo = createNode(key);
+    root = bstInsert(nodo, root);
+
+    nodo->colore = nodo == root ? Color::BLACK : Color::RED;
+
+    if (nodo->parent != nullptr && nodo->parent->parent != nullptr && nodo->parent->colore == Color::RED)
+    {
+        nodo = fixTree(nodo);
+    }
+
+    return root;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
@@ -197,7 +124,7 @@ RBT::node* RBT::leftRotate(node *tree) {
     node *dad = tree->parent; // sarebbe il nonno del nodo appena inserito
     node *leftSon = tree->left;
 
-    if (dad != root)
+    if (dad->parent != nullptr)
     {
         if (dad == dad->parent->left)
         {
@@ -223,23 +150,6 @@ RBT::node* RBT::leftRotate(node *tree) {
     }
     
     return tree;
-
-    // if (tree->right != nullptr)
-    //     tree->right->parent = tree;
-    
-    // right_child->parent = tree->parent;
-
-    // if (tree->parent == nullptr)
-    //     root = right_child;
-    // else if (tree == tree->parent->left)
-    //     tree->parent->left = right_child;
-    // else
-    //     tree->parent->right = right_child;
-
-    // right_child->left = grandFather;
-    // grandFather->parent = right_child;
-
-    // return right_child;
 }
 
 // tree viene passato come genitore del nodo appena inserito
@@ -247,7 +157,7 @@ RBT::node* RBT::rightRotate(node *tree) {
     node *dad = tree->parent;
     node *rightSon = tree->right;
 
-    if (dad != root)
+    if (dad->parent != nullptr)
     {
         if (dad == dad->parent->left)
         {
@@ -273,25 +183,6 @@ RBT::node* RBT::rightRotate(node *tree) {
     }
     
     return tree;
-    
-    
-    // if (tree->left != nullptr)
-    //     tree->left->parent = tree;
-
-    // left_child->parent = tree->parent;
-
-    // if (tree->parent == nullptr)
-    //     root = left_child;
-    // else if (tree == tree->parent->left)
-    //     tree->parent->left = left_child;
-    // else
-    //     tree->parent->right = left_child;
-
-    // left_child->right = tree;
-    // tree->parent = left_child;
-    // grandFather->parent = left_child;
-
-    // return tree;
 }
 
 void RBT::inOrder(node *tree) {
@@ -304,7 +195,7 @@ void RBT::inOrder(node *tree) {
 }
 
 int RBT::heightChecker(node* n) {
-    int count = 0;
+    int count = 1;
     while (n->right != nullptr)
     {
         n = n->right;
@@ -323,6 +214,15 @@ int RBT::leftHeightChecker(node* root) {
     return count;
 }
 
+int RBT::blackHeight(node* root) {
+    if (root == nullptr) return 0;
+    else
+    {
+        int bh = root->colore == Color::BLACK ? 1 : 0;
+        return bh + blackHeight(root->right);
+    }
+}
+
 /**
  * Implementazione funzioni pubbliche
  */
@@ -334,6 +234,7 @@ RBT::RBT() {
 void RBT::insert(int key) {
     root = insert(key, root);
 }
+
 
 RBT::node* RBT::find(int keyToFind) {
     return find(keyToFind, root);
@@ -351,6 +252,10 @@ int RBT::leftHeightChecker() {
     return  leftHeightChecker(root);
 }
 
+int RBT::blackHeight() {
+    return blackHeight(root);
+}
+
 int main(int argc, char const *argv[])
 {
     RBT tree;
@@ -361,13 +266,15 @@ int main(int argc, char const *argv[])
    
    
    
-    for (int i = 10; i > 1; i--)
+    for (int i = 1; i < 1000000; i++)
     {
         tree.insert(i);
     }
-    tree.inOrder();
-    int h = tree.leftHeightChecker();
-    std::cout << h << std::endl;
+    // tree.inOrder();
+    int h = tree.heightChecker();
+    int leftHeight = tree.leftHeightChecker();
+    int bh = tree.blackHeight();
+    std::cout << h << std::endl << leftHeight << std::endl << bh << std::endl;
     
 
     return 0;
