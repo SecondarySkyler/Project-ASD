@@ -145,7 +145,7 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->left->parent = tree;
             tree->left->left = tree->left->right = nullptr;
             tree->left->colore = Color::RED;
-            tree = tree->left;
+            // tree = tree->left;
         }
         else
         {
@@ -163,7 +163,7 @@ RBT::node* RBT::insert(int key, node* tree) {
             tree->right->parent = tree;
             tree->right->left = tree->right->right = nullptr;
             tree->right->colore = Color::RED;
-            tree = tree->right;
+            // tree = tree->right;
         }
         else
         {
@@ -171,9 +171,12 @@ RBT::node* RBT::insert(int key, node* tree) {
         }
     }
     
-    if(tree->parent == nullptr) root = tree;
+    if (tree->parent != nullptr && tree->parent->parent != nullptr && tree->parent->colore == Color::RED)
+    {
+        tree = fixTree(tree);
+    }
 
-    return (tree != root && tree->parent->colore == Color::RED) ? fixTree(tree) : tree;
+    return tree;
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
@@ -283,6 +286,16 @@ int RBT::heightChecker(node* n) {
     return count;
 }
 
+int RBT::leftHeightChecker(node* root) {
+    int count = 0;
+    while (root->left != nullptr)
+    {
+        root = root->left;
+        count++;
+    }
+    return count;
+}
+
 /**
  * Implementazione funzioni pubbliche
  */
@@ -307,22 +320,26 @@ int RBT::heightChecker() {
     return heightChecker(root);
 }
 
+int RBT::leftHeightChecker() {
+    return  leftHeightChecker(root);
+}
+
 int main(int argc, char const *argv[])
 {
     RBT tree;
-    // tree.insert(5);
-    // tree.insert(24);
     // tree.insert(34);
-    // tree.inOrder();
+    // tree.insert(24);
+    // tree.insert(5);
    
    
    
    
-    for (int i = 1; i < 10; i++)
+    for (int i = 10; i > 1; i--)
     {
         tree.insert(i);
     }
-    int h = tree.heightChecker();
+    tree.inOrder();
+    int h = tree.leftHeightChecker();
     std::cout << h << std::endl;
     
 
