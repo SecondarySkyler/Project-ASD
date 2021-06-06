@@ -192,27 +192,54 @@ RBT::node* RBT::find(int keyToFind, node* tree) {
         return nullptr;
 }
 
+// assumo che tree sia il genitore del nodo appena inserito
 RBT::node* RBT::leftRotate(node *tree) {
-    node *grandFather = tree;
-    node *right_child = tree->right;
-    tree->right = right_child->left;
+    node *dad = tree->parent; // sarebbe il nonno del nodo appena inserito
+    node *leftSon = tree->left;
 
-    if (tree->right != nullptr)
-        tree->right->parent = tree;
-    
-    right_child->parent = tree->parent;
-
-    if (tree->parent == nullptr)
-        root = right_child;
-    else if (tree == tree->parent->left)
-        tree->parent->left = right_child;
+    if (dad != root)
+    {
+        if (dad == dad->parent->left)
+        {
+            tree->parent->parent->left = tree;
+        }
+        else 
+        {
+            tree->parent->parent->right = tree;
+        }
+        tree->parent = dad->parent;  
+    }
     else
-        tree->parent->right = right_child;
+    {
+        root = tree;
+        tree->parent = nullptr;
+    }
+    tree->left = dad;
+    dad->right = leftSon;
+    dad->parent = tree;
+    if (leftSon != nullptr)
+    {
+        leftSon->parent = dad;
+    }
+    
+    return tree;
 
-    right_child->left = grandFather;
-    grandFather->parent = right_child;
+    // if (tree->right != nullptr)
+    //     tree->right->parent = tree;
+    
+    // right_child->parent = tree->parent;
 
-    return right_child;
+    // if (tree->parent == nullptr)
+    //     root = right_child;
+    // else if (tree == tree->parent->left)
+    //     tree->parent->left = right_child;
+    // else
+    //     tree->parent->right = right_child;
+
+    // right_child->left = grandFather;
+    // grandFather->parent = right_child;
+
+    // return right_child;
 }
 
 // tree viene passato come genitore del nodo appena inserito
