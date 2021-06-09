@@ -17,6 +17,7 @@ class AVL {
         void preOrder(void);
         void inOrder(void);
         void postOrder(void);
+        int heightChecker();
     private:
         node* root;
 
@@ -29,6 +30,7 @@ class AVL {
         void preOrder(node*);
         void inOrder(node*);
         void postOrder(node*);
+        int heightChecker(node*);
 };
 
 #endif
