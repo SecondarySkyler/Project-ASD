@@ -123,6 +123,16 @@ void AVL::postOrder(node* x) {
     }
 }
 
+int AVL::heightChecker(node* n) {
+    int count = 1;
+    while (n->right != nullptr)
+    {
+        n = n->right;
+        count++;
+    }
+    return count;
+}
+
 /*
 *
 *       public:
@@ -153,3 +163,21 @@ void AVL::postOrder(void) {
     postOrder(root);
 }
 
+int AVL::heightChecker() {
+    return heightChecker(root);
+}
+
+int main() {
+    AVL tree;
+    // tree.insert(30);
+    // tree.insert(20);
+    // tree.insert(10);
+    tree.inOrder();
+
+    for (int i = 0; i < 10; i++)
+    {
+        tree.insert(i);
+    }
+    
+    std::cout << tree.heightChecker() << std::endl;
+}
