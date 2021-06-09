@@ -256,26 +256,26 @@ int RBT::blackHeight() {
     return blackHeight(root);
 }
 
-int main(int argc, char const *argv[])
-{
-    RBT tree;
-    // tree.insert(34);
-    // tree.insert(24);
-    // tree.insert(5);
+// int main(int argc, char const *argv[])
+// {
+//     RBT tree;
+//     // tree.insert(34);
+//     // tree.insert(24);
+//     // tree.insert(5);
    
    
    
    
-    for (int i = 1; i < 1000000; i++)
-    {
-        tree.insert(i);
-    }
-    // tree.inOrder();
-    int h = tree.heightChecker();
-    int leftHeight = tree.leftHeightChecker();
-    int bh = tree.blackHeight();
-    std::cout << h << std::endl << leftHeight << std::endl << bh << std::endl;
+//     for (int i = 1; i < 1000000; i++)
+//     {
+//         tree.insert(i);
+//     }
+//     // tree.inOrder();
+//     int h = tree.heightChecker();
+//     int leftHeight = tree.leftHeightChecker();
+//     int bh = tree.blackHeight();
+//     std::cout << h << std::endl << leftHeight << std::endl << bh << std::endl;
     
 
-    return 0;
-}
+//     return 0;
+// }

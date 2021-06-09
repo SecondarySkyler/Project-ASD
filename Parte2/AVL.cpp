@@ -162,17 +162,3 @@ void AVL::postOrder(void) {
 int AVL::heightChecker() {
     return heightChecker(root, 0);
 }
-
-int main() {
-    AVL tree;
-    // tree.insert(30);
-    // tree.insert(20);
-    // tree.insert(10);
-
-    for (int i = 1000000; i > 0; i--)
-    {
-        tree.insert(i);
-    }
-    
-    std::cout << tree.heightChecker() << std::endl;
-}
