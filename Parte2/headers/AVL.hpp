@@ -30,7 +30,7 @@ class AVL {
         void preOrder(node*);
         void inOrder(node*);
         void postOrder(node*);
-        int heightChecker(node*);
+        int heightChecker(node*,int);
 };
 
 #endif

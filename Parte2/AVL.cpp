@@ -43,7 +43,7 @@ AVL::node* AVL::rightRotate(node* &x) {
     y->height = std::max(height(y->left), height(x)) + 1;
 
     // return nuova radice
-    return x;
+    return y;
 }
 
 AVL::node* AVL::insert(node* x, int key) {
@@ -123,14 +123,10 @@ void AVL::postOrder(node* x) {
     }
 }
 
-int AVL::heightChecker(node* n) {
-    int count = 1;
-    while (n->right != nullptr)
-    {
-        n = n->right;
-        count++;
-    }
-    return count;
+int AVL::heightChecker(node* n, int count) {
+    return std::max((n->left != nullptr)? heightChecker(n->left,count) : count,
+                    (n->right != nullptr)? heightChecker(n->right,count) : count)
+                    +1;
 }
 
 /*
@@ -164,7 +160,7 @@ void AVL::postOrder(void) {
 }
 
 int AVL::heightChecker() {
-    return heightChecker(root);
+    return heightChecker(root, 0);
 }
 
 int main() {
@@ -172,9 +168,8 @@ int main() {
     // tree.insert(30);
     // tree.insert(20);
     // tree.insert(10);
-    tree.inOrder();
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 1000000; i > 0; i--)
     {
         tree.insert(i);
     }
