@@ -24,7 +24,7 @@ BST::node* BST::insertM(int key, node* tree) {
 BST::node* BST::findM(int keyToFind, node* tree) {
     if (tree == NULL)
         return NULL;
-    else if (keyToFind = tree->val) 
+    else if (keyToFind == tree->val) 
         return tree;
     else if (keyToFind < tree->val) 
         return findM(keyToFind, tree->left);

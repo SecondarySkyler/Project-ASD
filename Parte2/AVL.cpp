@@ -89,7 +89,7 @@ AVL::node* AVL::insert(node* x, int key) {
 AVL::node* AVL::find(int key, node* x) {
     if (x == NULL)
         return NULL;
-    else if (key = x->val) 
+    else if (key == x->val) 
         return x;
     else if (key < x->val) 
         return find(key, x->left);

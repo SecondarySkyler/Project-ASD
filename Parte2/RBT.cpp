@@ -109,7 +109,7 @@ RBT::node* RBT::insert(int key, node *&root) {
 RBT::node* RBT::find(int keyToFind, node* tree) {
     if (tree == nullptr)
         return nullptr;
-    else if (keyToFind = tree->val) 
+    else if (keyToFind == tree->val) 
         return tree;
     else if (keyToFind < tree->val) 
         return find(keyToFind, tree->left);
