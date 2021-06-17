@@ -22,6 +22,7 @@ RBT::node* RBT::retrieveUncle(node* nephew, bool *zioPosition) {
     return nullptr;
 }
 
+// qui viene passato il nodo appena inserito
 RBT::node* RBT::fixTree(node *tree) {
     if (tree != nullptr && tree->parent != nullptr && tree->parent->colore == Color::RED)
     {
@@ -36,8 +37,8 @@ RBT::node* RBT::fixTree(node *tree) {
         } 
         else if (zio == nullptr || zio->colore == Color::BLACK) // se zio NON opposto => caso 2
         {
-            tree = isLeftSon ? rightRotate(tree->parent) : leftRotate(tree->parent);
-            tree = fixTree(tree->parent);
+            tree = isLeftSon ? rightRotate(tree) : leftRotate(tree);
+            tree = isLeftSon ? fixTree(tree->right) : fixTree(tree->left);
         }
         else { // zio opposto e rosso => caso 3
             tree->parent->colore = zio->colore = Color::BLACK;
@@ -107,16 +108,13 @@ RBT::node* RBT::insert(int key, node *&root) {
 }
 
 RBT::node* RBT::find(int keyToFind, node* tree) {
-    if (tree == nullptr)
-        return nullptr;
-    else if (keyToFind == tree->val) 
+    if (tree == nullptr || tree->val == keyToFind) {
         return tree;
-    else if (keyToFind < tree->val) 
-        return find(keyToFind, tree->left);
-    else if (keyToFind > tree->val)
+    } else if (keyToFind > tree->val) {
         return find(keyToFind, tree->right);
-    else
-        return nullptr;
+    } else {
+        return find(keyToFind, tree->left);
+    }
 }
 
 // assumo che tree sia il genitore del nodo appena inserito
@@ -126,7 +124,7 @@ RBT::node* RBT::leftRotate(node *tree) {
 
     if (dad->parent != nullptr)
     {
-        if (dad == dad->parent->left)
+        if (dad == dad->parent->left) // si controlla se il nonno è un figlio sinistro
         {
             tree->parent->parent->left = tree;
         }
@@ -141,9 +139,9 @@ RBT::node* RBT::leftRotate(node *tree) {
         root = tree;
         tree->parent = nullptr;
     }
-    tree->left = dad;
     dad->right = leftSon;
     dad->parent = tree;
+    tree->left = dad;
     if (leftSon != nullptr)
     {
         leftSon->parent = dad;
@@ -259,22 +257,25 @@ int RBT::blackHeight() {
 // int main(int argc, char const *argv[])
 // {
 //     RBT tree;
-//     // tree.insert(34);
-//     // tree.insert(24);
-//     // tree.insert(5);
-   
-   
-   
-   
-//     for (int i = 1; i < 1000000; i++)
+
+//     for (int i = 1; i < 100; i++)
 //     {
-//         tree.insert(i);
+//         int key = rand() % 32767;
+//         if (tree.find(key) == nullptr)
+//         {
+//             tree.insert(key);
+//         }
 //     }
-//     // tree.inOrder();
+//     tree.inOrder();
 //     int h = tree.heightChecker();
 //     int leftHeight = tree.leftHeightChecker();
 //     int bh = tree.blackHeight();
 //     std::cout << h << std::endl << leftHeight << std::endl << bh << std::endl;
+//     // tree.insert(7000);
+//     // tree.insert(7001);
+//     // tree.insert(2000);
+//     // tree.insert(2500);
+//     // tree.insert(2400);
     
 
 //     return 0;
