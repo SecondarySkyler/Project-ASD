@@ -1,5 +1,6 @@
 #include <iostream>
 #include "headers/AVL.hpp"
+#include "headers/utilities.hpp"
 
 /*
 *
@@ -129,6 +130,19 @@ int AVL::heightChecker(node* n, int count) {
                     +1;
 }
 
+void AVL::polishPrintPrivate(std::map<int, std::string> mappa, node* root) {
+    if (root != nullptr)
+    {
+        std::cout << root->val << ":" << mappa[root->val] << " ";
+        polishPrintPrivate(mappa, root->left);
+        polishPrintPrivate(mappa, root->right);
+    }
+    else
+    {
+        std::cout << "NULL" << " ";
+    }
+}
+
 /*
 *
 *       public:
@@ -161,4 +175,47 @@ void AVL::postOrder(void) {
 
 int AVL::heightChecker() {
     return heightChecker(root, 0);
+}
+
+void AVL::polishPrint(std::map<int, std::string> mappa) {
+    return polishPrintPrivate(mappa, root);
+}
+
+// insert 9 nine
+// show deve mostrare l'albero
+// exit esce
+int main() {
+    AVL tree;
+    std::string operazione;
+    int numberToInsert;
+    std::string numberLiteral;
+    std::map<int, std::string> number_literal;
+    while (operazione != "exit")
+    {
+        std::cin >> operazione;
+        if (operazione == "insert")
+        {
+            std::cin >> numberToInsert;
+            std::cin >> numberLiteral;
+            number_literal[numberToInsert] = numberLiteral;
+            tree.insert(numberToInsert);
+        }
+        else if (operazione == "show")
+        {
+            tree.polishPrint(number_literal);
+            return 0;
+        }
+        else 
+        {
+            return 0;
+        }
+        
+    }
+    
+    std::cout << operazione << std::endl;
+    
+    
+
+
+
 }
