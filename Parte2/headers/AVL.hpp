@@ -1,5 +1,6 @@
 #ifndef _AVL_H
 #define _AVL_H
+#include <map>
 
 
 
@@ -18,6 +19,7 @@ class AVL {
         void inOrder(void);
         void postOrder(void);
         int heightChecker();
+        void polishPrint(std::map<int, std::string>);
     private:
         node* root;
 
@@ -31,6 +33,8 @@ class AVL {
         void inOrder(node*);
         void postOrder(node*);
         int heightChecker(node*,int);
+        void polishPrintPrivate(std::map<int, std::string>, node*);
+
 };
 
 #endif
