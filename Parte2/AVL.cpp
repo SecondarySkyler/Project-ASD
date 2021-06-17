@@ -133,7 +133,7 @@ int AVL::heightChecker(node* n, int count) {
 void AVL::polishPrintPrivate(std::map<int, std::string> mappa, node* root) {
     if (root != nullptr)
     {
-        std::cout << root->val << ":" << mappa[root->val] << " ";
+        std::cout << root->val << ":" << mappa[root->val] << ":" << root->height << " ";
         polishPrintPrivate(mappa, root->left);
         polishPrintPrivate(mappa, root->right);
     }
@@ -203,19 +203,26 @@ int main() {
         else if (operazione == "show")
         {
             tree.polishPrint(number_literal);
-            return 0;
+            std::cout << std::endl;
+        }
+        else if (operazione == "find")
+        {
+            int numberToFind;
+            std::cin >> numberToFind;
+            AVL::node* searchedNode = tree.find(numberToFind);
+            if (searchedNode != nullptr) 
+            {
+                std::cout << number_literal[searchedNode->val] << std::endl;
+            }
+            else 
+            {
+                std::cout << "Not Found";
+            }
         }
         else 
         {
             return 0;
         }
         
-    }
-    
-    std::cout << operazione << std::endl;
-    
-    
-
-
-
+    }   
 }
