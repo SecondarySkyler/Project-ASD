@@ -221,6 +221,19 @@ int RBT::blackHeight(node* root) {
     }
 }
 
+void RBT::polishPrintPrivate(std::map<int, std::string> mappa, node* root) {
+    if (root != nullptr)
+    {
+        std::cout << root->val << ":" << mappa[root->val] << ":" << root->colore << " ";
+        polishPrintPrivate(mappa, root->left);
+        polishPrintPrivate(mappa, root->right);
+    }
+    else 
+    {
+        std::cout << "NULL" << " ";
+    }  
+}
+
 /**
  * Implementazione funzioni pubbliche
  */
@@ -252,6 +265,10 @@ int RBT::leftHeightChecker() {
 
 int RBT::blackHeight() {
     return blackHeight(root);
+}
+
+void RBT::polishPrint(std::map<int, std::string> mappa) {
+    return polishPrintPrivate(mappa, root);
 }
 
 // int main(int argc, char const *argv[])
