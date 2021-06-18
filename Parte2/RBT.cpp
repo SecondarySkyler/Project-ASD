@@ -224,7 +224,15 @@ int RBT::blackHeight(node* root) {
 void RBT::polishPrintPrivate(std::map<int, std::string> mappa, node* root) {
     if (root != nullptr)
     {
-        std::cout << root->val << ":" << mappa[root->val] << ":" << root->colore << " ";
+        
+        std::cout << root->val << ":" << mappa[root->val] << ":";
+        Color rootColor = root->colore;
+        switch (rootColor)
+        {
+            case Color::BLACK : std::cout << "Black" << " "; break;
+            case Color::RED : std::cout << "Red" << " "; break;
+        }
+
         polishPrintPrivate(mappa, root->left);
         polishPrintPrivate(mappa, root->right);
     }
@@ -271,29 +279,45 @@ void RBT::polishPrint(std::map<int, std::string> mappa) {
     return polishPrintPrivate(mappa, root);
 }
 
-// int main(int argc, char const *argv[])
-// {
-//     RBT tree;
-
-//     for (int i = 1; i < 100; i++)
-//     {
-//         int key = rand() % 32767;
-//         if (tree.find(key) == nullptr)
-//         {
-//             tree.insert(key);
-//         }
-//     }
-//     tree.inOrder();
-//     int h = tree.heightChecker();
-//     int leftHeight = tree.leftHeightChecker();
-//     int bh = tree.blackHeight();
-//     std::cout << h << std::endl << leftHeight << std::endl << bh << std::endl;
-//     // tree.insert(7000);
-//     // tree.insert(7001);
-//     // tree.insert(2000);
-//     // tree.insert(2500);
-//     // tree.insert(2400);
-    
-
-//     return 0;
-// }
+int main() {
+    RBT tree;
+    std::string operazione;
+    int numberToInsert;
+    std::string numberLiteral;
+    std::map<int, std::string> number_literal;
+    while (operazione != "exit")
+    {
+        std::cin >> operazione;
+        if (operazione == "insert")
+        {
+            std::cin >> numberToInsert;
+            std::cin >> numberLiteral;
+            number_literal[numberToInsert] = numberLiteral;
+            tree.insert(numberToInsert);
+        }
+        else if (operazione == "show")
+        {
+            tree.polishPrint(number_literal);
+            std::cout << std::endl;
+        }
+        else if (operazione == "find")
+        {
+            int numberToFind;
+            std::cin >> numberToFind;
+            RBT::node* searchedNode = tree.find(numberToFind);
+            if (searchedNode != nullptr) 
+            {
+                std::cout << number_literal[searchedNode->val] << std::endl;
+            }
+            else 
+            {
+                std::cout << "Not Found";
+            }
+        }
+        else 
+        {
+            return 0;
+        }
+        
+    }   
+}
