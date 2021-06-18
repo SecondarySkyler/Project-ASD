@@ -1,5 +1,6 @@
 #ifndef _RBT_H
 #define _RBT_H
+#include <map>
 
 class RBT {
         
@@ -25,6 +26,8 @@ class RBT {
         int leftHeightChecker();
         int blackHeight();
         #define isLeft(x) (x->parent->left == x ? true : false)
+        void polishPrint(std::map<int, std::string>);
+
         
     private:
         node* root;
@@ -41,8 +44,8 @@ class RBT {
         int blackHeight(node*);
         node* fixTree(node*);
         node* retrieveUncle(node*, bool*);
-        // funzioni da eliminare
         node* createNode(int);
+        void polishPrintPrivate(std::map<int, std::string>, node*);
 };
 
 
