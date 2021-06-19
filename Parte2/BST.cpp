@@ -43,6 +43,19 @@ void BST::inOrderM(node *tree) {
     }
 }
 
+void BST::polishPrint(std::map<int, std::string> mappa, node* root) {
+    if (root != nullptr)
+    {
+        std::cout << root->val << ":" << mappa[root->val] << " ";
+        polishPrint(mappa, root->left);
+        polishPrint(mappa, root->right);
+    }
+    else
+    {
+        std::cout << "NULL" << " ";
+    }
+}
+
 /**
  * 
  * IMPLEMENTAZIONE FUNZIONI PUBBLICHE
@@ -60,6 +73,54 @@ BST::node* BST::find(int keyToFind) {
 void BST::inOrder() {
     inOrderM(root);
 }
+
+void BST::polishPrint(std::map<int, std::string> mappa) {
+    return polishPrint(mappa, root);
+}
+
+int main() {
+    BST tree;
+    std::string operazione;
+    int numberToInsert;
+    std::string numberLiteral;
+    std::map<int, std::string> number_literal;
+    while (operazione != "exit")
+    {
+        std::cin >> operazione;
+        if (operazione == "insert")
+        {
+            std::cin >> numberToInsert;
+            std::cin >> numberLiteral;
+            number_literal[numberToInsert] = numberLiteral;
+            tree.insert(numberToInsert);
+        }
+        else if (operazione == "show")
+        {
+            tree.polishPrint(number_literal);
+            std::cout << std::endl;
+        }
+        else if (operazione == "find")
+        {
+            int numberToFind;
+            std::cin >> numberToFind;
+            BST::node* searchedNode = tree.find(numberToFind);
+            if (searchedNode != nullptr) 
+            {
+                std::cout << number_literal[searchedNode->val] << std::endl;
+            }
+            else 
+            {
+                std::cout << "Not Found";
+            }
+        }
+        else 
+        {
+            return 0;
+        }
+        
+    }   
+}
+
 
 
 
