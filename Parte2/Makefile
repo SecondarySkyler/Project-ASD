@@ -1,13 +1,25 @@
+CXX       := g++
+CXX_FLAGS := -O2 -Wall -Wextra -std=c++17 -pedantic -Wcast-align -Wunused -Wshadow -Wold-style-cast -Wpointer-arith -Wcast-qual -Wno-missing-braces
+
+BIN     := bin
+SRC     := src
+INCLUDE := headers
+
+LIBRARIES   :=
+EXECUTABLE  := program
 
 
-main : RBT.cpp AVL.cpp BST.cpp utilities.cpp main.cpp
-	g++ -g RBT.cpp AVL.cpp BST.cpp utilities.cpp main.cpp -o main
+all: $(BIN)/$(EXECUTABLE)
 
-bst : BST.cpp utilities.cpp main.cpp
-	g++ -g BST.cpp utilities.cpp main.cpp -o main
+run: clean all
+	clear
+	./$(BIN)/$(EXECUTABLE)
 
-avl : AVL.cpp utilities.cpp main.cpp
-	g++ -g AVL.cpp utilities.cpp main.cpp -o main
+$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
+	$(CXX) $(CXX_FLAGS) -I $(INCLUDE) $^ -o $@ $(LIBRARIES)
 
-rbt : RBT.cpp utilities.cpp main.cpp
-	g++ -g RBT.cpp utilities.cpp main.cpp -o main
+create_dirs:
+	@mkdir $(BIN)
+
+clean:
+	-rm $(BIN)/*

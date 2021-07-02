@@ -12,12 +12,11 @@ class RBT {
             node* left;
             node* right;
             Color colore;
-            bool isLeft() {
-                return this != nullptr && parent!= nullptr && val < parent->val; 
-            }
+            ~node();
         };
 
         RBT();
+        ~RBT();
         void insert(int);
         node* find(int);
         void inOrder();
@@ -41,7 +40,6 @@ class RBT {
         int blackHeight(node*);
         node* fixTree(node*);
         node* retrieveUncle(node*, bool*);
-        // funzioni da eliminare
         node* createNode(int);
 };
 

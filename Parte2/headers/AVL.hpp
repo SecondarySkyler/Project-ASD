@@ -10,8 +10,10 @@ class AVL {
             node* left;
             node* right;
             int height;
+            ~node();
         };
         AVL();
+        ~AVL();
         void insert(int);
         node* find(int);
         void preOrder(void);

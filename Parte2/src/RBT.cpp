@@ -1,5 +1,5 @@
 #include <iostream>
-#include "headers/RBT.hpp"
+#include "../headers/RBT.hpp"
 
 
 /**
@@ -227,6 +227,23 @@ int RBT::blackHeight(node* root) {
 
 RBT::RBT() {
     root = nullptr;
+}
+
+RBT::~RBT() {
+    delete root;
+}
+
+RBT::node::~node() {
+    if (left != nullptr)
+    {
+        delete left;
+    }
+    
+    if (right != nullptr)
+    {
+        delete right;
+    }
+
 }
 
 void RBT::insert(int key) {

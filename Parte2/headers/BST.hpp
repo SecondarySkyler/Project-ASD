@@ -12,9 +12,11 @@ class BST {
             int val;
             node* left;
             node* right;
+            ~node();
         };
 
         BST();
+        ~BST();
         void insert(int);
         node* find(int);
         void inOrder();

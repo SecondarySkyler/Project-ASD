@@ -1,9 +1,26 @@
 #include <iostream>
-#include "headers/BST.hpp"
+#include "../headers/BST.hpp"
 
 
 BST::BST() {
     root = NULL;
+}
+
+BST::~BST() { 
+    delete root;
+}
+
+BST::node::~node() {
+    if (left != nullptr)
+    {
+        delete left;
+    }
+    
+    if (right != nullptr)
+    {
+        delete right;
+    }
+
 }
 
 BST::node* BST::insertM(int key, node* tree) {
@@ -60,9 +77,3 @@ BST::node* BST::find(int keyToFind) {
 void BST::inOrder() {
     inOrderM(root);
 }
-
-
-
-
-
-

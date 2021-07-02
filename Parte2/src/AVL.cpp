@@ -1,5 +1,5 @@
 #include <iostream>
-#include "headers/AVL.hpp"
+#include "../headers/AVL.hpp"
 
 /*
 *
@@ -137,6 +137,23 @@ int AVL::heightChecker(node* n, int count) {
 
 AVL::AVL() {
     root = NULL;
+}
+
+AVL::~AVL() {
+    delete root;
+}
+
+AVL::node::~node() {
+    if (left != nullptr)
+    {
+        delete left;
+    }
+    
+    if (right != nullptr)
+    {
+        delete right;
+    }
+
 }
 
 void AVL::insert(int key) {
