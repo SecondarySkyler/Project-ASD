@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <typeinfo>
+#include <array>
 #include "../headers/utilities.hpp"
 #include "../headers/RBT.hpp"
 #include "../headers/BST.hpp"
@@ -30,15 +31,24 @@ std::vector<double> calcoloTempi() {
         int n = a * std::pow(1000, ((j + 0.0)/99)); // calcolo numero elementi
         int iterCount = 0;
         int key = 0;
+
+        std::vector<int> keys;
+        keys.reserve(n);
+
+        for (int i = 0; i < n; i++)
+        {
+            keys.push_back(std::rand());
+        }
+
         std::chrono::steady_clock::time_point end;
         std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+
         do
         {
             T timeTree;
-            for (int i = 0; i < n; i++)
-            {
-                key = std::rand();
 
+            for (const auto &key : keys)
+            {
                 if (timeTree.find(key) == nullptr) {
                     timeTree.insert(key);
                 }
@@ -51,7 +61,8 @@ std::vector<double> calcoloTempi() {
         tempoAmmortizzato = ((std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() + 0.0) / iterCount) / n;
 
         results.push_back(tempoAmmortizzato);
-        std::cout << " Iterazione : " + std::to_string(j) << std::endl;
+        std::cout << " Iterazione : " + std::to_string(j) << '\n';
+
     }
     
     return results;
@@ -62,9 +73,9 @@ std::vector<double> calcoloVarianza() {
 
     std::vector<double> varianze;
     varianze.reserve(100);
-    double varianza;
-    double averageTime;
-    double *arrayOfTimes = new double[20];
+    double varianza {0.0};
+    double averageTime {0.0};
+    std::array<double, 20> arrayOfTimes;
 
     for (int j = 0; j < 100; j++)
     {
@@ -73,16 +84,22 @@ std::vector<double> calcoloVarianza() {
         for (int i = 0; i < 20; i++)
         {
             double executionTime;
-            int key;
+
+            std::vector<int> keys;
+            keys.reserve(n);
+
+            for (int h = 0; h < n; h++)
+            {
+                keys.push_back(std::rand());
+            }
             int iterationsCounter = 0;
             std::chrono::steady_clock::time_point end;
             std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
             do
             {
                 T currentTree;
-                for (int i = 0; i < n; i++)
+                for (const auto &key : keys)
                 {
-                    key = std::rand();
                     if (currentTree.find(key) == nullptr)
                     {
                         currentTree.insert(key);
@@ -101,18 +118,15 @@ std::vector<double> calcoloVarianza() {
         }
         averageTime /= 20; // faccio la media dei 20 tempi di esecuzione
 
-        for (int j = 0; j < 20; j++)
+        for (const auto &time : arrayOfTimes)
         {
-            varianza += (arrayOfTimes[j] - averageTime) * (arrayOfTimes[j] - averageTime);
+            varianza += pow((time - averageTime), 2);
         }
         varianza /= 20;
         varianze.push_back(varianza);
         std::cout << "Iterazione varianza: " << std::to_string(j) << std::endl;
     }
     
-    // delete &varianza;
-    // delete &averageTime;
-    delete[] arrayOfTimes;
     return varianze;  
 }
 
@@ -134,14 +148,15 @@ int main(int argc, char **argv) {
     unsigned int seed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     srand(seed);
     
-    std::vector<double> tempiBst = calcoloTempi<BST>();
-    std::vector<double> tempiRbt = calcoloTempi<RBT>();
-    std::vector<double> tempiAvl = calcoloTempi<AVL>();
+    // std::vector<double> tempiBst = calcoloTempi<BST>();
+    // std::vector<double> tempiRbt = calcoloTempi<RBT>();
+    // std::vector<double> tempiAvl = calcoloTempi<AVL>();
 
-    // std::vector<double> bst_varianza = calcoloVarianza<BST>();
-    // std::vector<double> avl_varianza = calcoloVarianza<AVL>();
-    // std::vector<double> rbt_varianza = calcoloVarianza<RBT>();
-    printRecord(tempiBst, tempiRbt, tempiAvl);
+    std::vector<double> bst_varianza = calcoloVarianza<BST>();
+    std::vector<double> avl_varianza = calcoloVarianza<AVL>();
+    std::vector<double> rbt_varianza = calcoloVarianza<RBT>();
+    // printRecord(tempiBst, tempiRbt, tempiAvl);
+    printRecord(bst_varianza, avl_varianza, rbt_varianza);
     // for (int i = 0; i < tempiBst.size(); i++)
     // {
     //     std::cout << tempiBst[i] << ", " << bst_varianza[i] << std::endl;
