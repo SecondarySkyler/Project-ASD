@@ -34,13 +34,7 @@ double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
         {
             double executionTime;
 
-            // std::vector<int> keys;
-            // keys.reserve(n);
 
-            // for (int h = 0; h < n; h++)
-            // {
-            //     keys.push_back(std::rand());
-            // }
             int iterationsCounter = 0;
             std::chrono::steady_clock::time_point end;
             std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
@@ -72,7 +66,6 @@ double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
             varianza += pow((time - averageTime), 2);
         }
         varianza /= 20;
-        // std::cout << "Iterazione varianza: " << std::to_string(j) << std::endl;
     // }
     
     return varianza;  
@@ -136,6 +129,13 @@ void fillVectorWithNodes(std::vector<double> &keysVector, int n) {
     {
         keysVector.push_back(std::rand());
     }
+}
+
+void fillVectorWorstCase(std::vector<double> &vector, int n) {
+    for (int h = 0; h < n; h++)
+    {
+        vector.push_back(h);
+    }    
 }
 
 // compile with g++ -g RBT.cpp utilities.cpp main.cpp -o main
