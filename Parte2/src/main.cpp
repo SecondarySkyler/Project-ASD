@@ -20,85 +20,34 @@ const double t_min = resolution * ((1 / max_error) + 1);
 
 
 template<class T>
-std::vector<double> calcoloTempi() {
+double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
 
-    std::vector<double> results;
-    results.reserve(100); // richiede che il vettore contenga almeno 100 elementi
-    
-    for (int j = 0; j < 100; j++)
-    {
-        double tempoAmmortizzato;
-        int n = a * std::pow(1000, ((j + 0.0)/99)); // calcolo numero elementi
-        int iterCount = 0;
-        int key = 0;
-
-        std::vector<int> keys;
-        keys.reserve(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            keys.push_back(std::rand());
-        }
-
-        std::chrono::steady_clock::time_point end;
-        std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-
-        do
-        {
-            T timeTree;
-
-            for (const auto &key : keys)
-            {
-                if (timeTree.find(key) == nullptr) {
-                    timeTree.insert(key);
-                }
-            }
-            end = std::chrono::steady_clock::now();
-            iterCount++;
-
-        } while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() < t_min);
-
-        tempoAmmortizzato = ((std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() + 0.0) / iterCount) / n;
-
-        results.push_back(tempoAmmortizzato);
-        std::cout << " Iterazione : " + std::to_string(j) << '\n';
-
-    }
-    
-    return results;
-}
-
-template<class T>
-std::vector<double> calcoloVarianza() {
-
-    std::vector<double> varianze;
-    varianze.reserve(100);
     double varianza {0.0};
     double averageTime {0.0};
     std::array<double, 20> arrayOfTimes;
 
-    for (int j = 0; j < 100; j++)
-    {
-        int n = a * std::pow(1000, ((j + 0.0)/99));
+    // for (int j = 0; j < 100; j++)
+    // {
+        // int n = a * std::pow(1000, ((j + 0.0)/99));
 
         for (int i = 0; i < 20; i++)
         {
             double executionTime;
 
-            std::vector<int> keys;
-            keys.reserve(n);
+            // std::vector<int> keys;
+            // keys.reserve(n);
 
-            for (int h = 0; h < n; h++)
-            {
-                keys.push_back(std::rand());
-            }
+            // for (int h = 0; h < n; h++)
+            // {
+            //     keys.push_back(std::rand());
+            // }
             int iterationsCounter = 0;
             std::chrono::steady_clock::time_point end;
             std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
             do
             {
                 T currentTree;
-                for (const auto &key : keys)
+                for (const auto &key : vectorOfKeys)
                 {
                     if (currentTree.find(key) == nullptr)
                     {
@@ -123,43 +72,111 @@ std::vector<double> calcoloVarianza() {
             varianza += pow((time - averageTime), 2);
         }
         varianza /= 20;
-        varianze.push_back(varianza);
-        std::cout << "Iterazione varianza: " << std::to_string(j) << std::endl;
-    }
+        // std::cout << "Iterazione varianza: " << std::to_string(j) << std::endl;
+    // }
     
-    return varianze;  
+    return varianza;  
+}
+
+template<class T>
+std::pair<double, double> calcoloTempi(std::vector<double> &vectorOfKeys, int n) {
+
+    std::pair<double, double> results;
+    
+    // for (int j = 0; j < 100; j++)
+    // {
+        double tempoAmmortizzato;
+        // int n = a * std::pow(1000, ((j + 0.0)/99)); // calcolo numero elementi
+        int iterCount = 0;
+
+        std::chrono::steady_clock::time_point end;
+        std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+
+        do
+        {
+            T timeTree;
+
+            for (const auto &key : vectorOfKeys)
+            {
+                if (timeTree.find(key) == nullptr) {
+                    timeTree.insert(key);
+                }
+            }
+            end = std::chrono::steady_clock::now();
+            iterCount++;
+
+        } while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() < t_min);
+
+        tempoAmmortizzato = ((std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() + 0.0) / iterCount) / n;
+        double varianza = calcoloVarianza<T>(vectorOfKeys, n);
+
+        results = std::make_pair(tempoAmmortizzato, varianza); // sarebbe da eseguire un make_pair 
+
+    // }
+    
+    return results;
 }
 
 
-void printRecord(std::vector<double> &bst, std::vector<double> &rbt, std::vector<double> &avl) {
+
+void printRecordCsv(std::vector<std::pair<double, double>> &bst, std::vector<std::pair<double, double>> &rbt, std::vector<std::pair<double, double>> &avl) {
     std::ofstream csv("Records.csv"); // csv per la scrittura
     for (int i = 0; i < bst.size(); i++)    
     {   
         int n = a * std::pow(1000, ((i + 0.0)/99));
-        csv << std::to_string(n) <<  " BST, " << bst[i] << ", "
-                                    << "RBT, " << rbt[i] << ", "
-                                    << "AVL, " << avl[i] << std::endl;
+        csv << std::to_string(n) <<  ", " << "BST, " << bst[i].first << ", " << bst[i].second << ", " 
+                                          << "RBT, " << rbt[i].first << ", " << rbt[i].second << ", "
+                                          << "AVL, " << avl[i].first << ", " << avl[i].second << ", " << "\n";
     }
     
+}
+
+void fillVectorWithNodes(std::vector<double> &keysVector, int n) {
+    for (int h = 0; h < n; h++)
+    {
+        keysVector.push_back(std::rand());
+    }
 }
 
 // compile with g++ -g RBT.cpp utilities.cpp main.cpp -o main
 int main(int argc, char **argv) {
     unsigned int seed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     srand(seed);
-    
-    // std::vector<double> tempiBst = calcoloTempi<BST>();
-    // std::vector<double> tempiRbt = calcoloTempi<RBT>();
-    // std::vector<double> tempiAvl = calcoloTempi<AVL>();
 
-    std::vector<double> bst_varianza = calcoloVarianza<BST>();
-    std::vector<double> avl_varianza = calcoloVarianza<AVL>();
-    std::vector<double> rbt_varianza = calcoloVarianza<RBT>();
-    // printRecord(tempiBst, tempiRbt, tempiAvl);
-    printRecord(bst_varianza, avl_varianza, rbt_varianza);
-    // for (int i = 0; i < tempiBst.size(); i++)
+    std::vector<std::pair<double, double>> tempi_varianza_bst;
+    tempi_varianza_bst.reserve(100);
+
+    std::vector<std::pair<double, double>> tempi_varianza_avl;
+    tempi_varianza_avl.reserve(100);
+
+    std::vector<std::pair<double, double>> tempi_varianza_rbt;
+    tempi_varianza_rbt.reserve(100);
+
+    for (int i = 0; i < 100; i++)
+    {
+        int n = a * std::pow(1000, ((i + 0.0) / 99));
+        std::vector<double> keys;
+        keys.reserve(n);
+        fillVectorWithNodes(keys, n);
+
+        auto bst_result = calcoloTempi<BST>(keys, n);
+        auto avl_result = calcoloTempi<AVL>(keys, n);
+        auto rbt_result = calcoloTempi<RBT>(keys, n);
+
+        tempi_varianza_bst.push_back(bst_result);
+        tempi_varianza_avl.push_back(avl_result);
+        tempi_varianza_rbt.push_back(rbt_result);   
+    }
+
+    // for (int j = 0; j < tempi_varianza_bst.size(); j++)
     // {
-    //     std::cout << tempiBst[i] << ", " << bst_varianza[i] << std::endl;
+    //     std::cout << "BST, " << tempi_varianza_bst[j].first << " " << tempi_varianza_bst[j].second << " " 
+    //               << "AVL, " << tempi_varianza_avl[j].first << " " << tempi_varianza_avl[j].second << " "
+    //               << "RBT, " << tempi_varianza_rbt[j].first << " " << tempi_varianza_rbt[j].second << "\n"; 
     // }
+    
+    
+    printRecordCsv(tempi_varianza_bst, tempi_varianza_rbt, tempi_varianza_avl);
+
     
 }
