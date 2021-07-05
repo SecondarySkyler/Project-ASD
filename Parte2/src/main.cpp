@@ -18,9 +18,22 @@ const double max_error = 0.01;
 const auto resolution = getResolution();
 const double t_min = resolution * ((1 / max_error) + 1);
 
+void fillVectorWithNodes(std::vector<double> &keysVector, int n) {
+    for (int h = 0; h < n; h++)
+    {
+        keysVector.push_back(std::rand());
+    }
+}
+
+void fillVectorWorstCase(std::vector<double> &vector, int n) {
+    for (int h = 0; h < n; h++)
+    {
+        vector.push_back(h);
+    }    
+}
 
 template<class T>
-double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
+double calcoloVarianza(int n) {
 
     double varianza {0.0};
     double averageTime {0.0};
@@ -33,6 +46,9 @@ double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
         for (int i = 0; i < 20; i++)
         {
             double executionTime;
+            std::vector<double> keys;  
+            keys.reserve(n);
+            fillVectorWithNodes(keys, n); // popolo il vettore con n nodi
 
 
             int iterationsCounter = 0;
@@ -41,7 +57,7 @@ double calcoloVarianza(std::vector<double> &vectorOfKeys, int n) {
             do
             {
                 T currentTree;
-                for (const auto &key : vectorOfKeys)
+                for (const auto &key : keys)
                 {
                     if (currentTree.find(key) == nullptr)
                     {
@@ -101,7 +117,7 @@ std::pair<double, double> calcoloTempi(std::vector<double> &vectorOfKeys, int n)
         } while (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() < t_min);
 
         tempoAmmortizzato = ((std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() + 0.0) / iterCount) / n;
-        double varianza = calcoloVarianza<T>(vectorOfKeys, n);
+        double varianza = calcoloVarianza<T>(n);
 
         results = std::make_pair(tempoAmmortizzato, varianza); // sarebbe da eseguire un make_pair 
 
@@ -113,7 +129,7 @@ std::pair<double, double> calcoloTempi(std::vector<double> &vectorOfKeys, int n)
 
 
 void printRecordCsv(std::vector<std::pair<double, double>> &bst, std::vector<std::pair<double, double>> &rbt, std::vector<std::pair<double, double>> &avl) {
-    std::ofstream csv("Records.csv"); // csv per la scrittura
+    std::ofstream csv("Records_DiffStd.csv"); // csv per la scrittura
     for (int i = 0; i < bst.size(); i++)    
     {   
         int n = a * std::pow(1000, ((i + 0.0)/99));
@@ -124,32 +140,19 @@ void printRecordCsv(std::vector<std::pair<double, double>> &bst, std::vector<std
     
 }
 
-void fillVectorWithNodes(std::vector<double> &keysVector, int n) {
-    for (int h = 0; h < n; h++)
-    {
-        keysVector.push_back(std::rand());
-    }
-}
-
-void fillVectorWorstCase(std::vector<double> &vector, int n) {
-    for (int h = 0; h < n; h++)
-    {
-        vector.push_back(h);
-    }    
-}
 
 // compile with g++ -g RBT.cpp utilities.cpp main.cpp -o main
 int main(int argc, char **argv) {
     unsigned int seed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     srand(seed);
 
-    std::vector<std::pair<double, double>> tempi_varianza_bst;
+    std::vector<std::pair<double, double>> tempi_varianza_bst; // contiene tempi ammortizzati e varianze BST
     tempi_varianza_bst.reserve(100);
 
-    std::vector<std::pair<double, double>> tempi_varianza_avl;
+    std::vector<std::pair<double, double>> tempi_varianza_avl; // contiene tempi ammortizzati e varianze AVL
     tempi_varianza_avl.reserve(100);
 
-    std::vector<std::pair<double, double>> tempi_varianza_rbt;
+    std::vector<std::pair<double, double>> tempi_varianza_rbt; // contiene tempi ammortizzati e varianze RBT
     tempi_varianza_rbt.reserve(100);
 
     for (int i = 0; i < 100; i++)
@@ -157,7 +160,7 @@ int main(int argc, char **argv) {
         int n = a * std::pow(1000, ((i + 0.0) / 99));
         std::vector<double> keys;
         keys.reserve(n);
-        fillVectorWithNodes(keys, n);
+        fillVectorWithNodes(keys, n); // popolo il vettore dei nodi di modo che le n operazioni avvengano sullo stesso set per i 3 alberi
 
         auto bst_result = calcoloTempi<BST>(keys, n);
         auto avl_result = calcoloTempi<AVL>(keys, n);
