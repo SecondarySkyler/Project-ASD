@@ -1,0 +1,210 @@
+---
+title: "Relazione Parte 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(readr)
+library(ggplot2)
+library(gridExtra)
+```
+```{r}
+## Loading csv
+misure_csv = read_csv("Records_tempo_varianza.csv", col_names = c("Numero Operazioni", "Tipo Albero", "Tempo Ammortizzato", "Varianza", "Tipo Albero", "Tempo Ammortizzato", "Varianza", "Tipo Albero", "Tempo Ammortizzato", "Varianza"))
+bst_worst = read_csv("Records_tempo_worst_bst.csv", col_names = c("Numero Operazioni", "Tipo Albero", "Tempo Ammortizzato"))
+rbt_avl_worst = read_csv("Records_tempo_worst_rbtavl.csv", col_names = c("Numero Operazioni", "Tipo Albero", "Tempo Ammortizzato", "Tipo Albero", "Tempo Ammortizzato"))
+misure_csv
+bst_worst
+rbt_avl_worst
+```
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+grafico <- ggplot() +
+  ggtitle("Tempi ammortizzati in scala lineare") +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato`, colour = `Tipo Albero`)) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_1`, colour = `Tipo Albero_1`)) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_2`, colour = `Tipo Albero_2`)) +
+  theme_minimal()
+
+grafico
+```
+
+```{r, echo=FALSE}
+grafico_log <- ggplot() +
+  ggtitle("Tempi ammortizzati in scala doppiamente logaritmica") +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato`), colour = `Tipo Albero`)) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_1`), colour = `Tipo Albero_1`)) + 
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_2`), colour = `Tipo Albero_2`)) +
+  labs(x = "Numero Operazioni", y = "Tempo Ammortizzato") +
+  theme_minimal()
+
+grafico_log
+```
+
+```{r, echo=FALSE}
+# Arrange dei grafici tempo ammortizzato scala lineare e log
+tempo_grob <- arrangeGrob(grafico, grafico_log)
+ggsave("grafico_tempi.png", tempo_grob, width = 10, height = 10)
+```
+
+
+
+
+
+```{r, echo=FALSE}
+grafico_varianza_bst <- ggplot() +
+  ggtitle("Varianza BST") + 
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato`)) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato` + sqrt(`Varianza`))) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato` - sqrt(`Varianza`))) +
+  geom_ribbon(data = misure_csv, aes(x = `Numero Operazioni`, ymin = `Tempo Ammortizzato` - sqrt(`Varianza`), ymax = `Tempo Ammortizzato` + sqrt(`Varianza`), colour="BST"), fill = "darkslategray2",alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("BST" = "orangered1")) +
+  theme_minimal()
+  
+grafico_varianza_bst
+```
+
+
+
+
+
+```{r, echo=FALSE}
+grafico_varianza_bst_log <- ggplot() +
+  ggtitle("Varianza BST in scala doppiamente logaritmica") +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato`))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato` + sqrt(`Varianza`)))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato` - sqrt(`Varianza`)))) +
+  geom_ribbon(data = misure_csv, aes(x = log10(`Numero Operazioni`), ymin = log10(`Tempo Ammortizzato` - sqrt(`Varianza`)), ymax = log10(`Tempo Ammortizzato` + sqrt(`Varianza`)), colour = "BST"), fill = "darkslategray2", alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("BST" = "orangered1")) +
+  labs(x = "Numero Operazioni") +
+  labs(y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+grafico_varianza_bst_log
+```
+
+```{r, echo=FALSE}
+bst_grob <- arrangeGrob(grafico_varianza_bst, grafico_varianza_bst_log)
+ggsave("grafico_var_bst.png", bst_grob, width = 10, height = 10)
+```
+
+
+```{r, echo=FALSE}
+grafico_varianza_rbt <- ggplot() +
+  ggtitle("Varianza RBT") + 
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_1`)) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_1` + sqrt(`Varianza_1`))) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_1` - sqrt(`Varianza_1`))) +
+  geom_ribbon(data = misure_csv, aes(x = `Numero Operazioni`, ymin = `Tempo Ammortizzato_1` - sqrt(`Varianza_1`), ymax = `Tempo Ammortizzato_1` + sqrt(`Varianza_1`), colour = "RBT"), fill = "darkslategray2", alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("RBT" = "orangered1")) +
+  labs(y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+grafico_varianza_rbt
+
+```
+
+```{r, echo=FALSE}
+# grafico varianza rbt in scala doppiamente logaritmica
+grafico_varianza_rbt_log <- ggplot() +
+  ggtitle("Varianza RBT in scala doppiamente logaritmica") +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_1`))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_1` + sqrt(`Varianza_1`)))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_1` - sqrt(`Varianza_1`)))) +
+  geom_ribbon(data = misure_csv, aes(x = log10(`Numero Operazioni`), ymin = log10(`Tempo Ammortizzato_1` - sqrt(`Varianza_1`)), ymax = log10(`Tempo Ammortizzato_1` + sqrt(`Varianza_1`)), colour = "RBT"), fill = "darkslategray2", alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("RBT" = "orangered1")) +
+  labs(x = "Numero Operazioni", y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+grafico_varianza_rbt_log
+```
+
+```{r, echo=FALSE}
+rbt_var <- arrangeGrob(grafico_varianza_rbt, grafico_varianza_rbt_log)
+ggsave("grafico_var_rbt.png", rbt_var, width = 10, height = 10)
+
+```
+
+
+
+```{r, echo=FALSE}
+grafico_varianza_avl <- ggplot() +
+  ggtitle("Varianza AVL") + 
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_2`)) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_2` + sqrt(`Varianza_2`))) +
+  geom_line(data = misure_csv, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_2` - sqrt(`Varianza_2`))) +
+  geom_ribbon(data = misure_csv, aes(x = `Numero Operazioni`, ymin = `Tempo Ammortizzato_2` - sqrt(`Varianza_2`), ymax = `Tempo Ammortizzato_2` + sqrt(`Varianza_2`), colour = "AVL"), fill = "darkslategray2", alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("AVL" = "orangered1")) +
+  labs(y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+grafico_varianza_avl
+```
+
+
+```{r, echo=FALSE}
+# grafico varianza avl in scala doppiamente logaritmica
+grafico_varianza_avl_log <- ggplot() +
+  ggtitle("Varianza AVL in scala doppiamente logaritmica") +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_2`))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_2` + sqrt(`Varianza_2`)))) +
+  geom_line(data = misure_csv, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_2` - sqrt(`Varianza_2`)))) +
+  geom_ribbon(data = misure_csv, aes(x = log10(`Numero Operazioni`), ymin = log10(`Tempo Ammortizzato_2` - sqrt(`Varianza_2`)), ymax = log10(`Tempo Ammortizzato_2` + sqrt(`Varianza_2`)), colour = "AVL"), fill = "darkslategray2", alpha = 0.5) +
+  scale_color_manual(name = "Albero", values = c("AVL" = "orangered1")) +
+  labs(x = "Numero Operazioni", y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+grafico_varianza_avl_log
+```
+
+```{r, echo=FALSE}
+avl_var <- arrangeGrob(grafico_varianza_avl, grafico_varianza_avl_log)
+ggsave("grafico_var_avl.png", avl_var, width = 10, height = 10)
+
+```
+
+
+```{r, echo=FALSE}
+grafico_worstcase <- ggplot() +
+  ggtitle("Caso pessimo in scala lineare") +
+  geom_line(data = bst_worst, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato`, colour="BST")) +
+  geom_line(data = rbt_avl_worst, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato`, colour="RBT")) +
+  geom_line(data = rbt_avl_worst, aes(x = `Numero Operazioni`, y = `Tempo Ammortizzato_1`, colour="AVL")) +
+  scale_color_manual(name = "Albero", values = c("BST" = "green", "RBT" = "red", "AVL" = "blue")) +
+  theme_minimal()
+
+grafico_worstcase
+```
+
+```{r, echo=FALSE}
+grafico_worstcase_log <- ggplot() +
+  ggtitle("Caso pessimo in scala doppiamente logaritmica") +
+  geom_line(data = bst_worst, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato`), colour="BST")) +
+  geom_line(data = rbt_avl_worst, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato`), colour="RBT")) +
+  geom_line(data = rbt_avl_worst, aes(x = log10(`Numero Operazioni`), y = log10(`Tempo Ammortizzato_1`), colour="AVL")) +
+  scale_color_manual(name = "Albero", values = c("BST" = "green", "RBT" = "red", "AVL" = "blue")) +
+  labs(x = "Numero Operazioni", y = "Tempo Ammortizzato") +
+  theme_minimal()
+  
+
+grafico_worstcase_log
+```
+
+```{r, echo=FALSE}
+worst_case <- arrangeGrob(grafico_worstcase, grafico_worstcase_log)
+ggsave("grafico_worst_case.png", worst_case, width = 10, height = 10)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
